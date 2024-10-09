@@ -7,22 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SysCafeteriasweetcoffee.Models;
 using SysCafeteriasweetcoffee.Services;
+using SysCafeteriasweetcoffee.ViewModel;
+
 
 namespace SysCafeteriasweetcoffee.Controllers
 {
     public class UsuarioController : Controller
     {
         private readonly BDContext _context;
-
-        public UsuarioController(BDContext context)
-        {
-            _context = context;
-        }
-
         private readonly UsuarioService _usuarioService;
 
-        public UsuarioController(UsuarioService usuarioService)
+        public UsuarioController(BDContext context, UsuarioService usuarioService)
         {
+            _context = context;
             _usuarioService = usuarioService;
         }
 
@@ -35,16 +32,16 @@ namespace SysCafeteriasweetcoffee.Controllers
         // POST: Usuario/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string login, string password)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
                 // Buscar el usuario por su login
-                var usuario = await _context.Usuario.FirstOrDefaultAsync(u => u.Login == login);
+                var usuario = await _context.Usuario.FirstOrDefaultAsync(u => u.Login == model.Login);
                 if (usuario != null)
                 {
                     // Verificar si la contraseña ingresada es correcta comparando con el hash
-                    bool passwordValida = BCrypt.Net.BCrypt.Verify(password, usuario.Password);
+                    bool passwordValida = BCrypt.Net.BCrypt.Verify(model.Password, usuario.Password);
 
                     if (passwordValida)
                     {
@@ -57,8 +54,9 @@ namespace SysCafeteriasweetcoffee.Controllers
                 // Si llega aquí, la autenticación falló
                 ModelState.AddModelError("", "Login o contraseña incorrecta");
             }
-            return View();
+            return View(model);
         }
+
 
         // GET: Usuario
         public async Task<IActionResult> Index()

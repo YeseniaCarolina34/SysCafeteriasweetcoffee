@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 namespace SysCafeteriasweetcoffee.ViewModel
 {
     public class LoginViewModel
