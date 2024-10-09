@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SysCafeteriasweetcoffee.Models;
+using SysCafeteriasweetcoffee.Services;
 
 namespace SysCafeteriasweetcoffee.Controllers
 {
@@ -16,6 +17,47 @@ namespace SysCafeteriasweetcoffee.Controllers
         public UsuarioController(BDContext context)
         {
             _context = context;
+        }
+
+        private readonly UsuarioService _usuarioService;
+
+        public UsuarioController(UsuarioService usuarioService)
+        {
+            _usuarioService = usuarioService;
+        }
+
+        // GET: Usuario/Login
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Usuario/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(string login, string password)
+        {
+            if (ModelState.IsValid)
+            {
+                // Buscar el usuario por su login
+                var usuario = await _context.Usuario.FirstOrDefaultAsync(u => u.Login == login);
+                if (usuario != null)
+                {
+                    // Verificar si la contraseña ingresada es correcta comparando con el hash
+                    bool passwordValida = BCrypt.Net.BCrypt.Verify(password, usuario.Password);
+
+                    if (passwordValida)
+                    {
+                        // Almacenar el login del usuario en la sesión (puedes agregar más lógica según lo que necesites)
+                        HttpContext.Session.SetString("Login", usuario.Login);
+                        return RedirectToAction("Index", "Home"); // Redirigir a una página después del login exitoso
+                    }
+                }
+
+                // Si llega aquí, la autenticación falló
+                ModelState.AddModelError("", "Login o contraseña incorrecta");
+            }
+            return View();
         }
 
         // GET: Usuario
@@ -51,15 +93,15 @@ namespace SysCafeteriasweetcoffee.Controllers
             return View();
         }
 
-        // POST: Usuario/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,IdRol,Nombre,Apellido,Login,Password,Estatus,FechaRegistro")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
+                // Encriptar la contraseña antes de guardar el usuario
+                usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
+
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -67,6 +109,25 @@ namespace SysCafeteriasweetcoffee.Controllers
             ViewData["IdRol"] = new SelectList(_context.Rol, "Id", "Id", usuario.IdRol);
             return View(usuario);
         }
+
+        // POST: Usuario/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,IdRol,Nombre,Apellido,Login,Password,Estatus,FechaRegistro")] Usuario usuario)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(usuario);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["IdRol"] = new SelectList(_context.Rol, "Id", "Id", usuario.IdRol);
+        //    return View(usuario);
+        //}
+
+
 
         // GET: Usuario/Edit/5
         public async Task<IActionResult> Edit(int? id)
