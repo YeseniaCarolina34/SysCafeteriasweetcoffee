@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,9 @@ using SysCafeteriasweetcoffee.ViewModel;
 
 
 namespace SysCafeteriasweetcoffee.Controllers
+    
 {
+    
     public class UsuarioController : Controller
     {
         private readonly BDContext _context;
@@ -28,7 +31,15 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             return View();
         }
+        // Agrege esto de logout
+        // GET: Usuario/Logout
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // Limpiar la sesión
+            return RedirectToAction("Login"); // Redirigir a la página de login
+        }
 
+        
         // POST: Usuario/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -54,6 +65,7 @@ namespace SysCafeteriasweetcoffee.Controllers
                 // Si llega aquí, la autenticación falló
                 ModelState.AddModelError("", "Login o contraseña incorrecta");
             }
+            
             return View(model);
         }
 

@@ -4,6 +4,9 @@ namespace SysCafeteriasweetcoffee.ViewModel
 {
     public class LoginViewModel
     {
+        //Agregue esto 
+        public string Usuario { get; set; }
+       
         [Required(ErrorMessage = "El campo Login es obligatorio.")]
         public string Login { get; set; } = null!;
 
