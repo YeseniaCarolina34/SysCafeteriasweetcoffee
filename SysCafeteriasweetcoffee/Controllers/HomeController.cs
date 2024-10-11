@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SysCafeteriasweetcoffee.Models;
 using System.Diagnostics;
 
 namespace SysCafeteriasweetcoffee.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -12,7 +14,8 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             _logger = logger;
         }
-
+        
+        // Acción principal que redirige al login
         public IActionResult Index()
         {
             return View();

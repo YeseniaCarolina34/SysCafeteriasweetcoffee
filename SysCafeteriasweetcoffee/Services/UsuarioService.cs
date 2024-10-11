@@ -1,39 +1,95 @@
 ﻿using SysCafeteriasweetcoffee.Models;
-using BCrypt.Net; // Importar la librería BCrypt
+using System.Security.Cryptography;
+using System.Text;
 
 namespace SysCafeteriasweetcoffee.Services
 {
     public class UsuarioService
     {
-        // Método para registrar un nuevo usuario
-        public void RegistrarUsuario(string login, string password)
-        {
-            // Encriptar la contraseña con BCrypt
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+        private readonly BDContext _context;
 
-            // Crear el nuevo usuario con el login y la contraseña encriptada
-            Usuario nuevoUsuario = new Usuario
+        // Constructor que inyecta el contexto de la base de datos
+        public UsuarioService(BDContext context)
+        {
+            _context = context;
+        }
+
+        // Método para validar las credenciales del usuario (login y contraseña)
+        public Usuario? ValidarUsuario(string login, string password)
+        {
+            // Encriptar la contraseña ingresada con MD5
+            string passwordEncriptada = ConvertirMD5(password);
+
+            // Buscar el usuario en la base de datos con el login y contraseña encriptada
+            var usuario = _context.Usuario
+                .FirstOrDefault(u => u.Login == login && u.Password == passwordEncriptada);
+
+            return usuario;
+        }
+
+        // Método para convertir la contraseña encriptada en formato MD5
+        private string ConvertirMD5(string input)
+        {
+            using (MD5 md5 = MD5.Create())
             {
-                Login = login, // Usar Login en lugar de Username
-                Password = passwordHash // Usar Password en lugar de PasswordHash
-            };
+                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
 
-            // Guardar el usuario en la base de datos (Lógica para guardar en DB)
+                // Convertir el array de bytes en una cadena hexadecimal
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2")); // Convertir a hexadecimal en mayúsculas
+                }
+                return sb.ToString();
+            }
         }
 
-        // Método para verificar si la contraseña ingresada es correcta
-        public bool VerificarPassword(string passwordIngresada, string passwordHash)
+        // Método para obtener un usuario por su ID
+        public Usuario? ObtenerUsuarioPorId(int id)
         {
-            // Verificar si la contraseña en texto plano corresponde con el hash almacenado
-            return BCrypt.Net.BCrypt.Verify(passwordIngresada, passwordHash);
+            return _context.Usuario.Find(id);
         }
 
-        // Ejemplo de método para obtener el usuario por login
-        public Usuario ObtenerUsuarioPorLogin(string login)
+        // Método para agregar un nuevo usuario
+        public void AgregarUsuario(Usuario usuario)
         {
-            // Aquí deberías tener tu lógica para obtener el usuario desde la base de datos
-            // Por ejemplo: dbContext.Usuarios.FirstOrDefault(u => u.Login == login);
-            return null; // Simulación de la lógica
+            // Encriptar la contraseña antes de guardar
+            usuario.Password = ConvertirMD5(usuario.Password);
+
+            _context.Usuario.Add(usuario);
+            _context.SaveChanges();
+        }
+
+        // Método para actualizar un usuario existente
+        public void ActualizarUsuario(Usuario usuario)
+        {
+            var usuarioExistente = _context.Usuario.Find(usuario.Id);
+            if (usuarioExistente != null)
+            {
+                usuarioExistente.Nombre = usuario.Nombre;
+                usuarioExistente.Apellido = usuario.Apellido;
+                usuarioExistente.Login = usuario.Login;
+
+                // Encriptar la nueva contraseña si ha sido modificada
+                if (usuario.Password != usuarioExistente.Password)
+                {
+                    usuarioExistente.Password = ConvertirMD5(usuario.Password);
+                }
+
+                _context.SaveChanges();
+            }
+        }
+
+        // Método para eliminar un usuario
+        public void EliminarUsuario(int id)
+        {
+            var usuario = _context.Usuario.Find(id);
+            if (usuario != null)
+            {
+                _context.Usuario.Remove(usuario);
+                _context.SaveChanges();
+            }
         }
     }
 }

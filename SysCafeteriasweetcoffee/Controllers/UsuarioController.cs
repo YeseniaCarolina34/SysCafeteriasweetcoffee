@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using SysCafeteriasweetcoffee.Models;
 using SysCafeteriasweetcoffee.Services;
 using SysCafeteriasweetcoffee.ViewModel;
+using System.Security.Cryptography;
+using System.Text;
 
 
 namespace SysCafeteriasweetcoffee.Controllers
@@ -18,12 +23,10 @@ namespace SysCafeteriasweetcoffee.Controllers
     public class UsuarioController : Controller
     {
         private readonly BDContext _context;
-        private readonly UsuarioService _usuarioService;
 
-        public UsuarioController(BDContext context, UsuarioService usuarioService)
+        public UsuarioController(BDContext context)
         {
             _context = context;
-            _usuarioService = usuarioService;
         }
 
         // GET: Usuario/Login
@@ -31,44 +34,74 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             return View();
         }
-        // Agrege esto de logout
-        // GET: Usuario/Logout
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear(); // Limpiar la sesión
-            return RedirectToAction("Login"); // Redirigir a la página de login
-        }
 
-        
+
         // POST: Usuario/Login
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public IActionResult Login(string login, string password)
         {
             if (ModelState.IsValid)
             {
-                // Buscar el usuario por su login
-                var usuario = await _context.Usuario.FirstOrDefaultAsync(u => u.Login == model.Login);
+                // Encriptar la contraseña ingresada con MD5
+                string contraseñaEncriptada = EncriptarMD5(password);
+
+                // Verificar si el usuario existe (compara el Login y Password)
+                var usuario = _context.Usuario
+                                      .FirstOrDefault(u => u.Login == login && u.Password == contraseñaEncriptada);
+
                 if (usuario != null)
                 {
-                    // Verificar si la contraseña ingresada es correcta comparando con el hash
-                    bool passwordValida = BCrypt.Net.BCrypt.Verify(model.Password, usuario.Password);
+                    // Autenticación exitosa, crear cookie de autenticación
+                    var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, usuario.Nombre),
+                    new Claim(ClaimTypes.Email, usuario.Login)
+                };
 
-                    if (passwordValida)
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties
                     {
-                        // Almacenar el login del usuario en la sesión (puedes agregar más lógica según lo que necesites)
-                        HttpContext.Session.SetString("Login", usuario.Login);
-                        return RedirectToAction("Index", "Home"); // Redirigir a una página después del login exitoso
-                    }
-                }
+                        IsPersistent = true, // Para mantener la sesión iniciada si se cierra el navegador
+                    };
 
-                // Si llega aquí, la autenticación falló
-                ModelState.AddModelError("", "Login o contraseña incorrecta");
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                    return RedirectToAction("Index", "Home"); // Redirigir al dashboard o página principal
+                }
+                else
+                {
+                    ViewBag.Error = "Credenciales incorrectas";
+                }
             }
-            
-            return View(model);
+
+            return View();
         }
 
+        // Método para encriptar contraseñas con MD5
+        private string EncriptarMD5(string input)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                // Convertir el hash en una cadena hexadecimal
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2"));
+                }
+                return sb.ToString();
+            }
+        }
+
+        // Cerrar sesión
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
+        }
 
         // GET: Usuario
         public async Task<IActionResult> Index()
