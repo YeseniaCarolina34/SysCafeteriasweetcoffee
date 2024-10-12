@@ -2,7 +2,42 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Charm - Pastries</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">Sweet Coffe</h1>
+            <p class="subtitle">The first Asian pastry shop in the Netherlands</p>
+            <button class="discover-btn">Productos</button>
+        </header>
+
+        <section class="featured">
+            <h2>Featured Desserts of the Week</h2>
+            <div class="desserts-grid">
+                <div class="dessert-item">
+                    <img src="~/images/mango_mochi.jpg" alt="Mango Mochi">
+                    <h3>Mango Mochi</h3>
+                    <p>Delicious mochi filled with fresh mango.</p>
+                    <p class="price">$10.00</p>
+                </div>
+                <div class="dessert-item">
+                    <img src="~/images/matcha_roll.jpg" alt="Matcha Roll">
+                    <h3>Matcha Roll</h3>
+                    <p>Soft roll cake filled with matcha cream.</p>
+                    <p class="price">$15.00</p>
+                </div>
+                <!-- Add more dessert items here -->
+            </div>
+            <button class="view-all-btn">View all</button>
+        </section>
+    </div>
+</body>
+</html>
+
