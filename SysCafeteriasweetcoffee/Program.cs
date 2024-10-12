@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SysCafeteriasweetcoffee.Models;
 using SysCafeteriasweetcoffee.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,16 @@ builder.Services.AddDbContext<BDContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Registrar los servicios necesarios
-builder.Services.AddControllersWithViews();
+
+builder.Services.AddControllersWithViews(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser() // Exige que el usuario esté autenticado
+                    .Build();
+    options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter(policy)); // Aplica la política a todas las páginas por defecto
+});
+
+
 builder.Services.AddScoped<UsuarioService>();
 
 // Agregar soporte de memoria distribuida para sesiones

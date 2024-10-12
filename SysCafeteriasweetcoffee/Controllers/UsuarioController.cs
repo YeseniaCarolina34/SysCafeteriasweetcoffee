@@ -30,6 +30,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         }
 
         // GET: Usuario/Login
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -38,6 +39,7 @@ namespace SysCafeteriasweetcoffee.Controllers
 
         // POST: Usuario/Login
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Login(string login, string password)
         {
             if (ModelState.IsValid)
