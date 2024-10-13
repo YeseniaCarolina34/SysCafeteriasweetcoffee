@@ -14,7 +14,16 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             _logger = logger;
         }
-        
+
+
+        // Acción pública que muestra la página de inicio de la cafetería
+        [AllowAnonymous]
+        public IActionResult Inicio()
+        {
+            return View(); // Esta vista será accesible sin necesidad de autenticación
+        }
+
+
         // Acción principal que redirige al login
         public IActionResult Index()
         {
