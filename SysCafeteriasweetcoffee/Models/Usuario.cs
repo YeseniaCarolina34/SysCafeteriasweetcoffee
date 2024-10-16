@@ -29,6 +29,7 @@ public partial class Usuario
     [Unicode(false)]
     public string Password { get; set; } = null!;
 
+    [Required]
     public byte Estatus { get; set; }
 
     [Column(TypeName = "datetime")]

@@ -85,18 +85,19 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             using (MD5 md5 = MD5.Create())
             {
-                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
 
-                // Convertir el hash en una cadena hexadecimal
+                // Convertir el hash en una cadena hexadecimal en minúsculas
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < hashBytes.Length; i++)
                 {
-                    sb.Append(hashBytes[i].ToString("X2"));
+                    sb.Append(hashBytes[i].ToString("x2")); // En minúsculas
                 }
                 return sb.ToString();
             }
         }
+
 
         // Cerrar sesión
         public IActionResult Logout()
@@ -144,8 +145,8 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Encriptar la contraseña antes de guardar el usuario
-                usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
+                // Encriptar la contraseña usando MD5 antes de guardar el usuario
+                usuario.Password = EncriptarMD5(usuario.Password);
 
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
@@ -154,6 +155,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             ViewData["IdRol"] = new SelectList(_context.Rol, "Id", "Id", usuario.IdRol);
             return View(usuario);
         }
+
 
         // POST: Usuario/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
