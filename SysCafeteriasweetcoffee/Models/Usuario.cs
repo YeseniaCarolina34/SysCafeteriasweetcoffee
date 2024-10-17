@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace SysCafeteriasweetcoffee.Models;
@@ -11,6 +12,7 @@ public partial class Usuario
     [Key]
     public int Id { get; set; }
 
+    [Required(ErrorMessage = "El campo Rol es obligatorio.")]
     public int IdRol { get; set; }
 
     [StringLength(30)]
