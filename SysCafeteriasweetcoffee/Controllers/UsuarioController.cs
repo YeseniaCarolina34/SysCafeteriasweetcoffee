@@ -143,15 +143,15 @@ namespace SysCafeteriasweetcoffee.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,IdRol,Nombre,Apellido,Login,Password,Estatus,FechaRegistro")] Usuario usuario)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 // Encriptar la contraseña usando MD5 antes de guardar el usuario
                 usuario.Password = EncriptarMD5(usuario.Password);
 
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             ViewData["IdRol"] = new SelectList(_context.Rol, "Id", "Id", usuario.IdRol);
             return View(usuario);
         }

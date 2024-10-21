@@ -39,6 +39,7 @@ public partial class Usuario
 
     [ForeignKey("IdRol")]
     [InverseProperty("Usuario")]
+    [NotMapped]
     public virtual Rol IdRolNavigation { get; set; } = null!;
 
     [InverseProperty("IdUsuarioNavigation")]
