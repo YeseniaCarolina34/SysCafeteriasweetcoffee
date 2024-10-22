@@ -56,7 +56,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,Descripcion,IdCategoria")] Producto producto)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,Descripcion,IdCategoria, img")] Producto producto)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Precio,Descripcion,IdCategoria")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Precio,Descripcion,IdCategoria, img")] Producto producto)
         {
             if (id != producto.Id)
             {

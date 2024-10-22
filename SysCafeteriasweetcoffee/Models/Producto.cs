@@ -21,6 +21,9 @@ public partial class Producto
     [Column(TypeName = "text")]
     public string? Descripcion { get; set; }
 
+    [Column(TypeName = "max")]
+    public string? img { get; set; }
+
     [Column("idCategoria")]
     public int? IdCategoria { get; set; }
 

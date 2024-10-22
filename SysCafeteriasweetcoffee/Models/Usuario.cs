@@ -15,18 +15,22 @@ public partial class Usuario
     [Required(ErrorMessage = "El campo Rol es obligatorio.")]
     public int IdRol { get; set; }
 
+    [Required(ErrorMessage = "El nombre es obligatorio.")]
     [StringLength(30)]
     [Unicode(false)]
     public string Nombre { get; set; } = null!;
 
+    [Required(ErrorMessage = "El apellido es obligatorio.")]
     [StringLength(30)]
     [Unicode(false)]
     public string Apellido { get; set; } = null!;
 
+    [Required(ErrorMessage = "El login es obligatorio.")]
     [StringLength(25)]
     [Unicode(false)]
     public string Login { get; set; } = null!;
 
+    [Required(ErrorMessage = "La contraseña es obligatoria.")]
     [StringLength(32)]
     [Unicode(false)]
     public string Password { get; set; } = null!;
@@ -39,7 +43,6 @@ public partial class Usuario
 
     [ForeignKey("IdRol")]
     [InverseProperty("Usuario")]
-    [NotMapped]
     public virtual Rol IdRolNavigation { get; set; } = null!;
 
     [InverseProperty("IdUsuarioNavigation")]

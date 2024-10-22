@@ -135,26 +135,38 @@ namespace SysCafeteriasweetcoffee.Controllers
         // GET: Usuario/Create
         public IActionResult Create()
         {
-            ViewData["IdRol"] = new SelectList(_context.Rol, "Id", "Id");
+            // Cambiar "Id" (que es el valor) por "Nombre" (que será el texto mostrado)
+            ViewData["IdRol"] = new SelectList(_context.Rol, "Id", "Nombre");
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,IdRol,Nombre,Apellido,Login,Password,Estatus,FechaRegistro")] Usuario usuario)
         {
-            //if (ModelState.IsValid)
-            //{
+            ModelState.Remove("IdRolNavigation");
+
+            if (ModelState.IsValid)
+            {
+                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(modelError.ErrorMessage);  // O usa alguna forma de logging
+                }
+
                 // Encriptar la contraseña usando MD5 antes de guardar el usuario
                 usuario.Password = EncriptarMD5(usuario.Password);
 
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            //}
-            ViewData["IdRol"] = new SelectList(_context.Rol, "Id", "Id", usuario.IdRol);
+            }
+
+            // Recargar la lista de roles en caso de que haya un error
+            ViewData["IdRol"] = new SelectList(_context.Rol, "Id", "Nombre", usuario.IdRol);
             return View(usuario);
         }
+
 
 
 
@@ -206,7 +218,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             {
                 return NotFound();
             }
-
+            ModelState.Remove("IdRolNavigation");
             if (ModelState.IsValid)
             {
                 try
