@@ -8,11 +8,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienvenido a Sweet Coffee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #4CAF50;
+            margin-top: 50px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .btn-container {
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn-secondary {
+            background-color: #008CBA;
+        }
+
+        .btn-secondary:hover {
+            background-color: #007bb5;
+        }
+    </style>
 </head>
 <body>
     <h1>¡Bienvenido a Sweet Coffee!</h1>
-    <p>Explora nuestra deliciosa variedad de productos. Para acceder a más funciones, por favor inicia sesión.</p>
+    <p>Explora nuestra deliciosa variedad de productos. Para acceder a más funciones, por favor inicia sesión o crea una cuenta.</p>
 
-    <a href="/Usuario/Login">Iniciar sesión</a>
+    <div class="btn-container">
+        <!-- Botón para iniciar sesión -->
+        <!--<a href="/Usuario/Login" class="btn">Iniciar sesión</a>-->
+        <a asp-controller="Usuario" asp-action="Login">Iniciar Sesión</a>
+
+
+        <!-- Botón para crear una nueva cuenta -->
+        <a asp-controller="Usuario" asp-action="Registro">Crear cuenta</a>
+    </div>
 </body>
 </html>

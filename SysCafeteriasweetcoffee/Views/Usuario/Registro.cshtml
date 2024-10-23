@@ -1,0 +1,43 @@
+﻿@model SysCafeteriasweetcoffee.Models.Usuario
+
+@{
+    ViewData["Title"] = "Registro";
+}
+
+
+<h2>Registro de Cliente</h2>
+
+<form asp-action="Registro" method="post">
+    <div>
+        <label for="nombre">Nombre</label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="apellido">Apellido</label>
+        <input asp-for="Apellido" class="form-control" />
+        <span asp-validation-for="Apellido" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="login">Correo Electrónico</label>
+        <input asp-for="Login" class="form-control" />
+        <span asp-validation-for="Login" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="password">Contraseña</label>
+        <input type="password" asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="Estatus">Estado</label>
+        <input type="Estatus" asp-for="Estatus" class="form-control" />
+        <span asp-validation-for="Estatus" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Registrar</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

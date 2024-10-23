@@ -42,6 +42,11 @@ builder.Services.AddSession(options =>
         options.AccessDeniedPath = "/Usuario/AccessDenied"; // Página de acceso denegado
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Cliente", policy => policy.RequireRole("Cliente"));
+    options.AddPolicy("Administrador", policy => policy.RequireRole("Administrador"));
+});
 
 var app = builder.Build();
 
