@@ -22,6 +22,7 @@ namespace SysCafeteriasweetcoffee.Controllers
     [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
     public class UsuarioController : Controller
     {
+       
         private readonly BDContext _context;
 
         public UsuarioController(BDContext context)

@@ -13,6 +13,9 @@ namespace SysCafeteriasweetcoffee.Controllers
     [Authorize(Roles = "Cliente, Administrador")] // Clientes y administradores pueden acceder a las vistas
     public class ProductoController : Controller
     {
+        public IActionResult Producto() => Producto();
+
+        public IActionResult Orden() => Orden();
         private readonly BDContext _context;
 
         public ProductoController(BDContext context)
