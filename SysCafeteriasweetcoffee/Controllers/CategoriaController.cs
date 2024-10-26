@@ -152,5 +152,10 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             return _context.Categoria.Any(e => e.Id == id);
         }
+
+        public IActionResult C1()
+        {
+            return View();
+        }
     }
 }
