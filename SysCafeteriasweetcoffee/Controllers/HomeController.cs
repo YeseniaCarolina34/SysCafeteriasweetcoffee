@@ -40,5 +40,17 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [Authorize(Policy = "Administrador")]
+        public IActionResult AdminOnly()
+        {
+            return View(); // Solo accesible para administradores
+        }
+
+        [Authorize(Policy = "Cliente")]
+        public IActionResult ClientOnly()
+        {
+            return View(); // Solo accesible para clientes
+        }
     }
 }

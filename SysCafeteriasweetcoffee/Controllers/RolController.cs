@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using SysCafeteriasweetcoffee.Models;
 
 namespace SysCafeteriasweetcoffee.Controllers
 {
+    [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
     public class RolController : Controller
     {
         private readonly BDContext _context;
