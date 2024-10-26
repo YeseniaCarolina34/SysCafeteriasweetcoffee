@@ -123,6 +123,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             return RedirectToAction("Login", "Usuario");
         }
 
+        [AllowAnonymous]
 
         // GET: Registro
         [HttpGet]

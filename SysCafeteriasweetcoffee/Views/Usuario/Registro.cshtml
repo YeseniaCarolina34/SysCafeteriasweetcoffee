@@ -1,43 +1,141 @@
-﻿@model SysCafeteriasweetcoffee.Models.Usuario
+﻿@{
+    Layout = null;
+}
+
+@model SysCafeteriasweetcoffee.Models.Usuario
 
 @{
     ViewData["Title"] = "Registro";
 }
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Cliente</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
 
-<h2>Registro de Cliente</h2>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #ffe4e1;
+        }
 
-<form asp-action="Registro" method="post">
-    <div>
-        <label for="nombre">Nombre</label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="apellido">Apellido</label>
-        <input asp-for="Apellido" class="form-control" />
-        <span asp-validation-for="Apellido" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="login">Correo Electrónico</label>
-        <input asp-for="Login" class="form-control" />
-        <span asp-validation-for="Login" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="password">Contraseña</label>
-        <input type="password" asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="Estatus">Estado</label>
-        <input type="Estatus" asp-for="Estatus" class="form-control" />
-        <span asp-validation-for="Estatus" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Registrar</button>
-    </div>
-</form>
+        .form-container {
+            background-color: #ffccdb;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+        h2 {
+            color: #ff5c8a;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            color: #ff5c8a;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="Estatus"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffeaf2;
+            color: #ff5c8a;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-danger {
+            font-size: 12px;
+            color: #e60023;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .btn-primary {
+            background-color: #ff5c8a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #ff769b;
+            }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Registro de Cliente</h2>
+        <form asp-action="Registro" method="post">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input asp-for="Apellido" class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="login">Correo Electrónico</label>
+                <input asp-for="Login" class="form-control" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Estatus">Estado</label>
+                <input type="Estatus" asp-for="Estatus" class="form-control" />
+                <span asp-validation-for="Estatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-primary">Registrar</button>
+            </div>
+        </form>
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>
