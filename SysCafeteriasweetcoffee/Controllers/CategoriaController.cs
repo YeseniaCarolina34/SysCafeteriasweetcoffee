@@ -10,7 +10,7 @@ using SysCafeteriasweetcoffee.Models;
 
 namespace SysCafeteriasweetcoffee.Controllers
 {
-    [Authorize(Roles = "Cliente, Administrador")] // Clientes y administradores pueden acceder a las vistas
+    
 
     public class CategoriaController : Controller
     {
@@ -26,7 +26,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             return View(await _context.Categoria.ToListAsync());
         }
-
+        
         // GET: Categoria/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,11 +46,13 @@ namespace SysCafeteriasweetcoffee.Controllers
         }
 
         // GET: Categoria/Create
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         // POST: Categoria/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -66,6 +68,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             }
             return View(categoria);
         }
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
 
         // GET: Categoria/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -82,7 +85,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             }
             return View(categoria);
         }
-
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         // POST: Categoria/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -117,7 +120,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             }
             return View(categoria);
         }
-
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         // GET: Categoria/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -135,7 +138,7 @@ namespace SysCafeteriasweetcoffee.Controllers
 
             return View(categoria);
         }
-
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         // POST: Categoria/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -160,5 +163,20 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             return View();
         }
+
+        public IActionResult C2()
+        {
+            return View();
+        }
+
+        public IActionResult C3()
+        {
+            return View();
+        }
+        public IActionResult C4()
+        {
+            return View();
+        }
+
     }
 }

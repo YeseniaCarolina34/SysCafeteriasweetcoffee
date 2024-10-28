@@ -10,7 +10,7 @@ using SysCafeteriasweetcoffee.Models;
 
 namespace SysCafeteriasweetcoffee.Controllers
 {
-    [Authorize(Roles = "Cliente, Administrador")] // Clientes y administradores pueden acceder a las vistas
+    
     public class ProductoController : Controller
     {
        
@@ -46,7 +46,7 @@ namespace SysCafeteriasweetcoffee.Controllers
 
             return View(producto);
         }
-
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         // GET: Producto/Create
         public IActionResult Create()
         {
@@ -57,6 +57,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         // POST: Producto/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,Descripcion,IdCategoria, img")] Producto producto)
@@ -72,6 +73,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         }
 
         // GET: Producto/Edit/5
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,6 +93,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         // POST: Producto/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Precio,Descripcion,IdCategoria, img")] Producto producto)
@@ -125,6 +128,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         }
 
         // GET: Producto/Delete/5
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,6 +148,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         }
 
         // POST: Producto/Delete/5
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
