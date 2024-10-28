@@ -34,13 +34,14 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;              // Marca la cookie como esencial
 });
 
- builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Usuario/Login"; // Página de inicio de sesión
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Tiempo de expiración de la cookie
-        options.AccessDeniedPath = "/Usuario/AccessDenied"; // Página de acceso denegado
-    });
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+   .AddCookie(options =>
+   {
+       options.LoginPath = "/Usuario/Login"; // Página de inicio de sesión
+       options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Tiempo de expiración de la cookie
+       options.AccessDeniedPath = "/Usuario/UnauthorizedAlert"; // Nueva página de acceso denegado
+   });
+
 
 builder.Services.AddAuthorization(options =>
 {
