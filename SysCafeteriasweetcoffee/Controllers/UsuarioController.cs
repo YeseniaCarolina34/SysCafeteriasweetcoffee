@@ -114,23 +114,14 @@ namespace SysCafeteriasweetcoffee.Controllers
             }
         }
 
-
-        // GET: Usuario/Logout
-        [HttpGet]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Usuario");
-        }
-
-        [AllowAnonymous]
-
         // GET: Registro
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Registro()
         {
             return View();
         }
+
         // POST: Registro
         [HttpPost]
         public async Task<IActionResult> Registro(Usuario usuario)
@@ -333,6 +324,21 @@ namespace SysCafeteriasweetcoffee.Controllers
         private bool UsuarioExists(int id)
         {
             return _context.Usuario.Any(e => e.Id == id);
+        }
+
+        // Acción de Logout
+        public async Task<IActionResult> Logout()
+        {
+            // Cerrar sesión del usuario actual
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Redirigir a la página de inicio de sesión después del cierre de sesión
+            return RedirectToAction("Login", "Usuario");
+        }
+
+        public IActionResult UnauthorizedAlert()
+        {
+            return View();
         }
     }
 }

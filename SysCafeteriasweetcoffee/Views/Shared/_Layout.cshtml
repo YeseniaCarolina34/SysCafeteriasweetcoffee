@@ -47,11 +47,21 @@
                         </li>
                         
                     </ul>
-                    <div class="d-flex">
-                        <form asp-area="Logout" asp-controller="Usuario" asp-action="Logout" method="post">
-                            <button type="submit" class="btn btn-danger">Logout</button>
-                        </form>
-                    </div>
+                    <!-- Enlace de Logout -->
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Usuario" asp-action="Logout">Logout</a>
+                        </li>
+                    </ul>
+                    @* <script>
+                        function confirmLogout() {
+                            // Mostrar mensaje de confirmación
+                            if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+                                // Si el usuario confirma, redirigir a la acción Logout
+                                window.location.href = '/Usuario/Logout';
+                            }
+                        }
+                    </script> *@
                 </div>
             </div>
         </nav>

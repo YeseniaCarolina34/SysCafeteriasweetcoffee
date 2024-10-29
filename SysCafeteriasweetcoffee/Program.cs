@@ -38,6 +38,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
    .AddCookie(options =>
    {
        options.LoginPath = "/Usuario/Login"; // Página de inicio de sesión
+       options.LogoutPath = "/Usuario/Logout";       // Página de cierre de sesión
        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Tiempo de expiración de la cookie
        options.AccessDeniedPath = "/Usuario/UnauthorizedAlert"; // Nueva página de acceso denegado
    });
