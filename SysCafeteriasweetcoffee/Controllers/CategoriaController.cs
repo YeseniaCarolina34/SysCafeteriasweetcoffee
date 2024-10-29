@@ -178,5 +178,21 @@ namespace SysCafeteriasweetcoffee.Controllers
             return View();
         }
 
+        public IActionResult C5()
+        {
+            return View();
+        }
+        public IActionResult C6()
+        {
+            return View();
+        }
+        public IActionResult C7()
+        {
+            return View();
+        }
+        public IActionResult C8()
+        {
+            return View();
+        }
     }
 }
