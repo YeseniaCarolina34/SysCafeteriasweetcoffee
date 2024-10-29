@@ -326,6 +326,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             return _context.Usuario.Any(e => e.Id == id);
         }
 
+        [AllowAnonymous]
         // Acción de Logout
         public async Task<IActionResult> Logout()
         {
@@ -336,6 +337,8 @@ namespace SysCafeteriasweetcoffee.Controllers
             return RedirectToAction("Login", "Usuario");
         }
 
+
+        [AllowAnonymous]
         public IActionResult UnauthorizedAlert()
         {
             return View();
