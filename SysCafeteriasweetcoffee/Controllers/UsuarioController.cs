@@ -142,7 +142,7 @@ namespace SysCafeteriasweetcoffee.Controllers
                 await _context.SaveChangesAsync();
 
                 // Redirigir después de registro exitoso
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Usuario"); // Dirigir a la página de Login
             }
 
             // Si el modelo no es válido, vuelve a mostrar el formulario con errores
@@ -334,7 +334,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Redirigir a la página de inicio de sesión después del cierre de sesión
-            return RedirectToAction("Login", "Usuario");
+            return RedirectToAction("Inicio", "Home");
         }
 
 
