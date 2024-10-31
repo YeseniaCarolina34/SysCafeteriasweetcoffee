@@ -1,7 +1,7 @@
 ﻿/* Estilos generales */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f7f7f7;
+    background-color: #fff3e0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,7 +30,7 @@ body {
     .login-box h2 {
         margin-bottom: 20px;
         font-size: 24px;
-        color: #ff5722;
+        color: #68400A;
     }
 
 /* Estilos del formulario */
@@ -57,7 +57,7 @@ body {
 /* Estilos del botón */
 .btn-login {
     width: 100%;
-    background-color: #ff5722;
+    background-color: #F86B87;
     color: white;
     padding: 10px;
     border: none;
@@ -67,7 +67,7 @@ body {
 }
 
     .btn-login:hover {
-        background-color: #e64a19;
+        background-color: #F86B87;
     }
 
 /* Pie de página */

@@ -11,20 +11,24 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            text-align: center;
+            background-image: url(https://i.pinimg.com/736x/15/a2/80/15a28015eb6b9d0c3325c061fec083ab.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin-left: 60px;
+            margin-top: 40px;
+            text-align: left;
             margin: 0;
-            padding: 0;
+            padding: 150px;
         }
 
         h1 {
-            color: #4CAF50;
+            color: #F86B87;
             margin-top: 50px;
         }
 
         p {
             font-size: 18px;
-            color: #555;
+            color: white;
         }
 
         .btn-container {
@@ -38,7 +42,7 @@
             font-size: 16px;
             text-decoration: none;
             color: white;
-            background-color: #4CAF50;
+            background-color: #FF5BA5;
             border: none;
             border-radius: 5px;
             transition: background-color 0.3s ease;
@@ -55,20 +59,35 @@
         .btn-secondary:hover {
             background-color: #007bb5;
         }
+
+        .view-all-btn {
+            background-color: #ff80ab;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
     </style>
 </head>
-<body>
+<body class="d-flex flex-column align-items-center justify-content-center vh-100 text-center">
     <h1>¡Bienvenido a Sweet Coffee!</h1>
-    <p>Explora nuestra deliciosa variedad de productos. Para acceder a más funciones, por favor inicia sesión o crea una cuenta.</p>
+    <p>Explora nuestra deliciosa variedad de productos. </p>
+    <p>Para acceder a más funciones, por favor inicia sesión o crea una cuenta.</p>
 
-    <div class="btn-container">
+    <div class="btn-container mt-3">
         <!-- Botón para iniciar sesión -->
         <!--<a href="/Usuario/Login" class="btn">Iniciar sesión</a>-->
-        <a asp-controller="Usuario" asp-action="Login">Iniciar Sesión</a>
-
-
+        <a asp-controller="Usuario" asp-action="Login">
+                        <button class="view-all-btn">Iniciar Sesión</button>
+         </a>
         <!-- Botón para crear una nueva cuenta -->
-        <a asp-controller="Usuario" asp-action="Registro">Crear cuenta</a>
+        <a asp-controller="Usuario" asp-action="Registro">
+            <button class="view-all-btn">Crear Cuenta</button>
+        </a>
     </div>
 </body>
 </html>
