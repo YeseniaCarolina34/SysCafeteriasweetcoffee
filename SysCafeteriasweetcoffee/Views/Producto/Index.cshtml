@@ -1,59 +1,44 @@
 ﻿@model IEnumerable<SysCafeteriasweetcoffee.Models.Producto>
+<!-- Asegúrate de usar el namespace correcto -->
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Precio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdCategoriaNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.img)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Precio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdCategoriaNavigation.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.img)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+ 
+<h1>Productos de la Cafeteria</h1>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 mb-3">
+            <div class="dessert-item">
+            
+                <!-- Imagen del producto -->
+                <img src="@item.img" class="card-img-top" alt="Imagen del producto" style="height: 200px; object-fit: cover;">
+
+                <!-- Contenido de la tarjeta -->
+                <div class="card-body">
+                    <h5 class="card-title">@item.Nombre</h5>
+                    <p class="card-text">
+                        <small class="text-muted">Precio: @item.Precio</small><br>
+                        <small class="text-muted">Descripción: @item.Descripcion</small><br>
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary">Ver</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Eliminar</a>
+                    </div>
+                    <a asp-controller="#" asp-action="#">
+                        <button class="view-all-btn">Reservar</button>
+                    </a>
+                </div>
+            </div>
+            </div>
+    }
+    </div>
+

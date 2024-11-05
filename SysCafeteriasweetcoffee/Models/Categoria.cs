@@ -15,6 +15,9 @@ public partial class Categoria
     [Unicode(false)]
     public string Nombre { get; set; } = null!;
 
+    [Column(TypeName = "max")]
+    public string? img { get; set; }
+
     [InverseProperty("IdCategoriaNavigation")]
     public virtual ICollection<Producto> Producto { get; set; } = new List<Producto>();
 }

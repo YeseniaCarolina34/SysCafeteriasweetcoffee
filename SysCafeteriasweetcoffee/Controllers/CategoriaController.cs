@@ -36,6 +36,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             }
 
             var categoria = await _context.Categoria
+                .Include(c => c.Producto)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (categoria == null)
             {
@@ -46,6 +47,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         }
 
         // GET: Categoria/Create
+        [HttpGet]
         [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         public IActionResult Create()
         {
@@ -58,10 +60,35 @@ namespace SysCafeteriasweetcoffee.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] Categoria categoria)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,img")] Categoria categoria, IFormFile img)
         {
+            ModelState.Remove("img");
             if (ModelState.IsValid)
             {
+                string rutaImagen = null;
+
+                // Verificar si se ha subido una imagen
+                if (img != null && img.Length > 0)
+                {
+                    // Obtener la ruta donde se guardará la imagen
+                    string rutaCarpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "NewFolder");
+
+                    // Crear el nombre único para la imagen
+                    string nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
+
+                    // Combinar la ruta de la carpeta con el nombre del archivo
+                    string rutaCompleta = Path.Combine(rutaCarpeta, nombreArchivo);
+
+                    // Guardar la imagen en la ruta especificada
+                    using (var stream = new FileStream(rutaCompleta, FileMode.Create))
+                    {
+                        await img.CopyToAsync(stream);
+                    }
+
+                    // Almacenar la ruta para guardarla en la base de datos
+                    rutaImagen = "/NewFolder/" + nombreArchivo;
+                }
+                categoria.img = rutaImagen;
                 _context.Add(categoria);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -85,13 +112,14 @@ namespace SysCafeteriasweetcoffee.Controllers
             }
             return View(categoria);
         }
+
         [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         // POST: Categoria/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] Categoria categoria)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,img")] Categoria categoria, IFormFile img)
         {
             if (id != categoria.Id)
             {
@@ -102,6 +130,26 @@ namespace SysCafeteriasweetcoffee.Controllers
             {
                 try
                 {
+                    // Si se subió una nueva imagen
+                    if (img != null && img.Length > 0)
+                    {
+                        // Aquí puedes agregar la lógica para guardar la imagen en una ruta específica
+                        // Ejemplo: guardarla en el servidor en la carpeta "wwwroot/images"
+                        var filePath = Path.Combine("wwwroot/NewFolder", img.FileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await img.CopyToAsync(stream);
+                        }
+
+                        // Actualizar la propiedad de imagen con la ruta del archivo guardado
+                        categoria.img = "/NewFolder/" + img.FileName;
+                    }
+                    else
+                    {
+                        // Si no se subió ninguna imagen nueva, conservar la imagen existente
+                        _context.Entry(categoria).Property(p => p.img).IsModified = false;
+                    }
                     _context.Update(categoria);
                     await _context.SaveChangesAsync();
                 }
@@ -120,6 +168,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             }
             return View(categoria);
         }
+
         [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         // GET: Categoria/Delete/5
         public async Task<IActionResult> Delete(int? id)
