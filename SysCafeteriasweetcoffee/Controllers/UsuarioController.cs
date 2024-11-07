@@ -332,8 +332,9 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             // Cerrar sesión del usuario actual
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
+           
             // Redirigir a la página de inicio de sesión después del cierre de sesión
+            
             return RedirectToAction("Inicio", "Home");
         }
 
@@ -343,5 +344,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             return View();
         }
+       
+
     }
 }

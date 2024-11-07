@@ -45,23 +45,45 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="DetalleOrden" asp-action="Index">DetalleOrden</a>
                         </li>
-                        
+
                     </ul>
-                    <!-- Enlace de Logout -->
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Usuario" asp-action="Logout">Logout</a>
-                        </li>
-                    </ul>
-                    @* <script>
-                        function confirmLogout() {
-                            // Mostrar mensaje de confirmación
-                            if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
-                                // Si el usuario confirma, redirigir a la acción Logout
-                                window.location.href = '/Usuario/Logout';
-                            }
-                        }
-                    </script> *@
+
+                    <!-- Enlace de Logout con confirmación -->
+                    <a href="javascript:void(0);" onclick="confirmLogout()">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script type="text/javascript">
+        function confirmLogout() {
+            Swal.fire({
+                title: "¿Estás seguro de que deseas cerrar sesión?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, cerrar sesión",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '@Url.Action("Logout", "Usuario")';
+                }
+            });
+        }
+    </script>
+
+                   
                 </div>
             </div>
         </nav>
