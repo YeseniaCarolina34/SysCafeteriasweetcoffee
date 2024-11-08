@@ -11,9 +11,11 @@ namespace SysCafeteriasweetcoffee.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly BDContext _context;
+        public HomeController(ILogger<HomeController> logger, BDContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
 
@@ -28,7 +30,9 @@ namespace SysCafeteriasweetcoffee.Controllers
         // Acción principal que redirige al login
         public IActionResult Index()
         {
-            return View();
+            var categorias = _context.Categoria.ToList();
+            return View(categorias);
+
         }
 
         public IActionResult Privacy()

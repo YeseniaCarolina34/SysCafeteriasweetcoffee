@@ -17,46 +17,31 @@
         <header class="header">
             <h1 class="logo">Sweet Coffe</h1>
             <p class="subtitle">The first Asian pastry shop in the Netherlands</p>
-            <button class="discover-btn">Productos</button>
         </header>
-
-        <section class="featured">
-            <h2>Sweet Coffe Drinks</h2>
-            <div class="desserts-grid">
-                <div class="dessert-item">
-                    <img src="~/img/cc.jpg" alt="Mango Mochi">
-                    <h3>Cafés Calientes</h3>
-                    <p>Bebidas con los mejores granos de café 100% arábica.</p>
-                    <a asp-controller="Categoria" asp-action="C1">
-                        <button class="view-all-btn">Ver todos</button>
-                    </a>
-                </div>
-                <div class="dessert-item">
-                    <img src="~/img/frio.jpg" alt="Matcha Roll">
-                    <h3>Bebidas Frías</h3>
-                    <p>Bebidas refrescantes de hielo batido con base de café.</p>
-                    <a asp-controller="Categoria" asp-action="C2">
-                        <button class="view-all-btn">Ver todos</button>
-                    </a>
-                    </div>
-                <div class="dessert-item">
-                    <img src="~/img/te.jpg" alt="Matcha Roll">
-                    <h3>Tés e Infusiones</h3>
-                    <p>Diferentes mezclas de té para tus mejores infusiones.</p>
-                    <a asp-controller="Categoria" asp-action="C3">
-                        <button class="view-all-btn">Ver todos</button>
-                    </a>
-                </div>
-                <div class="dessert-item">
-                    <img src="~/img/special.jpg" alt="Matcha Roll">
-                    <h3>Bebidas Especiales</h3>
-                    <p>Bebidas refrescantes, con frutas y base de café.</p>
-                    <a asp-controller="Categoria" asp-action="C4">
-                        <button class="view-all-btn">Ver todos</button>
-                    </a>
-                </div>
-        </section>
     </div>
+    <h2>Categorias Bebidas y Comidas</h2>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 mb-3">
+                <div class="dessert-item">
+
+                    <!-- Imagen del producto -->
+                    <img src="@item.img" class="card-img-top" alt="Imagen del producto" style="height: 200px; object-fit: cover;">
+
+                    <!-- Contenido de la tarjeta -->
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Nombre</h5>
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="Categoria" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary">Ver todos los productos</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        }
+    </div>
+
 </body>
 </html>
-
