@@ -34,7 +34,14 @@
                 @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.Id)
+                    @if (item.IdUsuarioNavigation != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.Nombre) <!-- Usa Nombre si quieres mostrar el nombre del usuario -->
+                    }
+                    else
+                    {
+                        <span>No asignado</span>
+                    }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

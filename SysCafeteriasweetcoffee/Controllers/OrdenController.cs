@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SysCafeteriasweetcoffee.Models;
+using SysCafeteriasweetcoffee.Models.ViewModel;
 
 namespace SysCafeteriasweetcoffee.Controllers
 {
@@ -20,10 +22,166 @@ namespace SysCafeteriasweetcoffee.Controllers
             _context = context;
         }
 
-        // GET: Orden
-        public async Task<IActionResult> Index()
+
+
+
+
+
+
+
+
+        // Método para mostrar el catálogo de productos
+        public IActionResult MostrarCatalogo()
         {
-            var bDContext = _context.Orden.Include(o => o.IdUsuarioNavigation);
+            // Obtén la lista de productos para el catálogo
+            var productos = _context.Producto.Include(p => p.IdCategoria).ToList();
+
+            // Obtener el cliente actual
+            var clienteId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Convertir clienteId a int
+            int clienteIdInt;
+            Orden ordenActual = null;
+
+            if (int.TryParse(clienteId, out clienteIdInt))
+            {
+                // Buscar si el cliente ya tiene una orden en proceso
+                ordenActual = _context.Orden.FirstOrDefault(o => o.IdUsuario == clienteIdInt && o.Estado == "en_proceso");
+            }
+
+            // Crear el ViewModel con los datos de productos y la orden actual (si existe)
+            var viewModel = new CatalogoViewModel
+            {
+                Productos = productos,
+                OrdenActual = ordenActual
+            };
+
+            // Enviar el ViewModel a la vista
+            return View(viewModel);
+        }
+
+        // Método para añadir productos a la orden
+        [HttpPost]
+        public IActionResult AgregarAlOrden(Dictionary<int, int> productos)
+        {
+            // Obtener el cliente actual
+            var clienteId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Convertir clienteId a int
+            int clienteIdInt;
+            if (int.TryParse(clienteId, out clienteIdInt))
+            {
+                // Verificar si el cliente ya tiene una orden en proceso
+                var orden = _context.Orden.FirstOrDefault(o => o.IdUsuario == clienteIdInt && o.Estado == "en_proceso");
+
+                // Si no existe, crear una nueva orden
+                if (orden == null)
+                {
+                    orden = new Orden
+                    {
+                        IdUsuario = clienteIdInt,
+                        Fecha = DateTime.Now,
+                        Estado = "en_proceso",
+                        Total = 0
+                    };
+                    _context.Orden.Add(orden);
+                    _context.SaveChanges();
+                }
+
+                // Rellenar DetalleOrden con los productos seleccionados
+                foreach (var item in productos)
+                {
+                    var productoId = item.Key;
+                    var cantidad = item.Value;
+
+                    if (cantidad > 0)
+                    {
+                        var producto = _context.Producto.Find(productoId);
+                        var detalleOrden = new DetalleOrden
+                        {
+                            IdOrden = orden.Id,
+                            IdProducto = producto.Id,
+                            Cantidad = cantidad,
+                            Precio = producto.Precio
+                        };
+                        _context.DetalleOrden.Add(detalleOrden);
+                    }
+                }
+                _context.SaveChanges();
+
+                return RedirectToAction("MostrarResumenOrden", new { ordenId = orden.Id });
+            }
+            else
+            {
+                // Manejar el caso en que clienteId no es un número válido
+                return BadRequest("ID de cliente inválido");
+            }
+        }
+
+        // Método para mostrar el resumen de la orden
+        public IActionResult MostrarResumenOrden(int ordenId)
+        {
+            var orden = _context.Orden
+                        .Include(o => o.DetalleOrden)
+                        .ThenInclude(d => d.IdProductoNavigation) // Cambiado a IdProductoNavigation
+                        .FirstOrDefault(o => o.Id == ordenId);
+
+			if (orden == null)
+			{
+				return NotFound();
+			}
+
+			// Verificar que los elementos en DetalleOrden no tengan valores nulos en las propiedades de navegación
+			foreach (var detalle in orden.DetalleOrden)
+			{
+				if (detalle.IdProductoNavigation == null)
+				{
+					// Manejar el caso en que un producto esté en null
+					detalle.IdProductoNavigation = new Producto { Nombre = "Producto no disponible" };
+				}
+			}
+
+			return View(orden);
+		}
+
+        // Método para confirmar la orden
+        [HttpPost]
+        public IActionResult ConfirmarOrden(int ordenId)
+		{
+			var orden = _context.Orden.Include(o => o.DetalleOrden).FirstOrDefault(o => o.Id == ordenId);
+			if (orden == null || orden.DetalleOrden == null || !orden.DetalleOrden.Any())
+			{
+				return NotFound("La orden no existe o no tiene detalles.");
+			}
+
+			var total = orden.DetalleOrden
+				.Where(d => d.Precio != null)  // Asegurarse de que el precio no sea null
+				.Sum(d => d.Precio * d.Cantidad);
+
+			orden.Total = total;
+			orden.Estado = "confirmada";
+			_context.SaveChanges();
+
+			return View("Confirmacion", orden);
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+		// GET: Orden
+		public async Task<IActionResult> Index()
+        {
+            var bDContext = _context.Orden
+    .Include(o => o.IdUsuarioNavigation)
+    .Where(o => o.IdUsuario != null);
             return View(await bDContext.ToListAsync());
         }
 
@@ -62,6 +220,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             if (ModelState.IsValid)
             {
+                orden.Estado = "pendiente";
                 _context.Add(orden);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -92,7 +251,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Fecha,Total,IdUsuario")] Orden orden)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Fecha,Total,IdUsuario,Estado")] Orden orden)
         {
             if (id != orden.Id)
             {

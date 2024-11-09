@@ -1,0 +1,35 @@
+﻿@model SysCafeteriasweetcoffee.Models.Orden
+
+<h2>Resumen de la Orden</h2>
+
+<div>
+    <h3>Información de la Orden</h3>
+    <p>ID de la Orden: @Model.Id</p>
+    <p>Estado: @Model.Estado</p>
+    <p>Total: $@Model.Total</p>
+</div>
+
+<div>
+    <h3>Detalles de la Orden</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detalle in Model.DetalleOrden)
+            {
+                <tr>
+                    <td>@detalle.IdProductoNavigation.Nombre</td> <!-- Accede al nombre del producto -->
+                    <td>@detalle.Cantidad</td>
+                    <td>@detalle.Precio</td>
+                    <td>@(detalle.Cantidad * detalle.Precio)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

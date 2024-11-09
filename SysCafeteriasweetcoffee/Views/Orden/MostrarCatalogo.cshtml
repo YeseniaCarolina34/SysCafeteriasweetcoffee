@@ -1,0 +1,24 @@
+﻿@model SysCafeteriasweetcoffee.Models.ViewModel.CatalogoViewModel
+
+<h2>Catálogo de Productos</h2>
+
+<form method="post" asp-action="AgregarAlOrden">
+    @foreach (var producto in Model.Productos)
+    {
+        <div>
+            <h4>@producto.Nombre (@producto.IdCategoria)</h4>
+            <p>Precio: $@producto.Precio</p>
+            <input type="number" name="productos[@producto.Id]" value="0" min="0" />
+        </div>
+    }
+    <button type="submit">Añadir a la orden</button>
+</form>
+
+@if (Model.OrdenActual != null)
+{
+    <h3>Orden Actual</h3>
+    <p>Estado de la orden: @Model.OrdenActual.Estado</p>
+    <p>Total: $@Model.OrdenActual.Total</p>
+}
+
+
