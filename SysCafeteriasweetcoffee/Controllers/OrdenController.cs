@@ -31,6 +31,7 @@ namespace SysCafeteriasweetcoffee.Controllers
 
 
         // Método para mostrar el catálogo de productos
+       
         public IActionResult MostrarCatalogo()
         {
             // Obtén la lista de productos para el catálogo
@@ -60,7 +61,6 @@ namespace SysCafeteriasweetcoffee.Controllers
             return View(viewModel);
         }
 
-        // Método para añadir productos a la orden
         [HttpPost]
         public IActionResult AgregarAlOrden(Dictionary<int, int> productos)
         {
