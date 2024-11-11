@@ -22,16 +22,7 @@ namespace SysCafeteriasweetcoffee.Controllers
             _context = context;
         }
 
-
-
-
-
-
-
-
-
         // Método para mostrar el catálogo de productos
-       
         public IActionResult MostrarCatalogo()
         {
             // Obtén la lista de productos para el catálogo
@@ -56,7 +47,7 @@ namespace SysCafeteriasweetcoffee.Controllers
                 Productos = productos,
                 OrdenActual = ordenActual
             };
-
+            
             // Enviar el ViewModel a la vista
             return View(viewModel);
         }
@@ -67,36 +58,39 @@ namespace SysCafeteriasweetcoffee.Controllers
             // Obtener el cliente actual
             var clienteId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            // Convertir clienteId a int
-            int clienteIdInt;
-            if (int.TryParse(clienteId, out clienteIdInt))
+            // Validar clienteId y convertirlo a int
+            if (string.IsNullOrEmpty(clienteId) || !int.TryParse(clienteId, out int clienteIdInt))
             {
-                // Verificar si el cliente ya tiene una orden en proceso
-                var orden = _context.Orden.FirstOrDefault(o => o.IdUsuario == clienteIdInt && o.Estado == "en_proceso");
+                return BadRequest("ID de cliente inválido");
+            }
 
-                // Si no existe, crear una nueva orden
-                if (orden == null)
+            // Buscar o crear la orden en proceso
+            var orden = _context.Orden.FirstOrDefault(o => o.IdUsuario == clienteIdInt && o.Estado == "en_proceso");
+            if (orden == null)
+            {
+                orden = new Orden
                 {
-                    orden = new Orden
-                    {
-                        IdUsuario = clienteIdInt,
-                        Fecha = DateTime.Now,
-                        Estado = "en_proceso",
-                        Total = 0
-                    };
-                    _context.Orden.Add(orden);
-                    _context.SaveChanges();
-                }
+                    IdUsuario = clienteIdInt,
+                    Fecha = DateTime.Now,
+                    Estado = "en_proceso",
+                    Total = 0
+                };
+                _context.Orden.Add(orden);
+                _context.SaveChanges();
+            }
 
-                // Rellenar DetalleOrden con los productos seleccionados
-                foreach (var item in productos)
+            // Rellenar DetalleOrden con los productos seleccionados
+            foreach (var item in productos)
+            {
+                var productoId = item.Key;
+                var cantidad = item.Value;
+
+                // Validar la cantidad y existencia del producto
+                if (cantidad > 0)
                 {
-                    var productoId = item.Key;
-                    var cantidad = item.Value;
-
-                    if (cantidad > 0)
+                    var producto = _context.Producto.Find(productoId);
+                    if (producto != null)
                     {
-                        var producto = _context.Producto.Find(productoId);
                         var detalleOrden = new DetalleOrden
                         {
                             IdOrden = orden.Id,
@@ -106,43 +100,46 @@ namespace SysCafeteriasweetcoffee.Controllers
                         };
                         _context.DetalleOrden.Add(detalleOrden);
                     }
+                    else
+                    {
+                        return NotFound($"Producto con ID {productoId} no encontrado.");
+                    }
                 }
-                _context.SaveChanges();
+            }
 
-                return RedirectToAction("MostrarResumenOrden", new { ordenId = orden.Id });
-            }
-            else
-            {
-                // Manejar el caso en que clienteId no es un número válido
-                return BadRequest("ID de cliente inválido");
-            }
+            _context.SaveChanges();
+
+            // Redireccionar al resumen de la orden
+            return RedirectToAction("MostrarResumenOrden", new { ordenId = orden.Id });
         }
+
+
 
         // Método para mostrar el resumen de la orden
         public IActionResult MostrarResumenOrden(int ordenId)
         {
             var orden = _context.Orden
                         .Include(o => o.DetalleOrden)
-                        .ThenInclude(d => d.IdProductoNavigation) // Cambiado a IdProductoNavigation
+                        .ThenInclude(d => d.IdProductoNavigation)
                         .FirstOrDefault(o => o.Id == ordenId);
 
-			if (orden == null)
-			{
-				return NotFound();
-			}
+            if (orden == null)
+            {
+                return NotFound();
+            }
 
-			// Verificar que los elementos en DetalleOrden no tengan valores nulos en las propiedades de navegación
-			foreach (var detalle in orden.DetalleOrden)
-			{
-				if (detalle.IdProductoNavigation == null)
-				{
-					// Manejar el caso en que un producto esté en null
-					detalle.IdProductoNavigation = new Producto { Nombre = "Producto no disponible" };
-				}
-			}
+            // Validar que cada DetalleOrden tenga un producto asociado
+            foreach (var detalle in orden.DetalleOrden)
+            {
+                if (detalle.IdProductoNavigation == null)
+                {
+                    detalle.IdProductoNavigation = new Producto { Nombre = "Producto no disponible" };
+                }
+            }
 
-			return View(orden);
-		}
+            return View(orden);
+        }
+
 
         // Método para confirmar la orden
         [HttpPost]
