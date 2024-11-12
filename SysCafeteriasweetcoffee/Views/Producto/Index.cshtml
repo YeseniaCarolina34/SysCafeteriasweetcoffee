@@ -1,16 +1,15 @@
-﻿@model IEnumerable<SysCafeteriasweetcoffee.Models.Producto>
+﻿INDEX PRODUCTOSSSSSSSSSSS
+@model IEnumerable<SysCafeteriasweetcoffee.Models.Producto>
 <!-- Asegúrate de usar el namespace correcto -->
-
 @{
     ViewData["Title"] = "Index";
 }
-<h1>Productos de la Cafetería</h1>
 
 <div class="row">
     @foreach (var item in Model)
     {
         <div class="col-md-3 mb-3">
-            <div class="dessert-item">
+            <div class="dessert-item card">
                 <img src="@item.img" class="card-img-top" alt="Imagen del producto" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">@item.Nombre</h5>
@@ -23,7 +22,7 @@
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info">Editar</a>
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Eliminar</a>
                     </div>
-                    <button type="button" class="view-all-btn order-btn"
+                    <button type="button" class="btn btn-primary order-btn"
                             data-id="@item.Id"
                             data-nombre="@item.Nombre"
                             data-precio="@item.Precio">
@@ -35,142 +34,122 @@
     }
 </div>
 
-<!-- Barra Lateral de la Orden -->
-<div id="sidebar" class="col-md-3 sidebar">
-    <button id="toggleSidebarBtn" class="toggle-btn">☰</button>
-    <h4>Mi Orden</h4>
-    <ul id="orderList"></ul>
-    <div id="orderSummary" style="margin-top: 20px;">
-        <p><strong>Total: $<span id="totalPrice">0.00</span></strong></p>
-        <button id="placeOrderBtn" class="place-order-btn">Realizar orden</button>
-    </div>
-</div>
-    </div>
+<!-- Barra lateral para la orden -->
+<div class="sidebar">
+    <h2>Mi Orden</h2>
+    <ul id="order-list"></ul>
+    <p id="total">Total: $0.00</p>
+    <button onclick="finalizeOrder()">Realizar pedido</button>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const orderList = document.getElementById("orderList");
-        const totalPriceEl = document.getElementById("totalPrice");
-        const sidebar = document.getElementById("sidebar");
-        const toggleSidebarBtn = document.getElementById("toggleSidebarBtn");
-
-        let totalPrice = 0;
-
-        function updateTotal() {
-            totalPrice = 0;
-            document.querySelectorAll(".order-item").forEach(item => {
-                const price = parseFloat(item.getAttribute("data-price"));
-                const quantity = parseInt(item.querySelector(".quantity").value);
-                totalPrice += price * quantity;
-            });
-            totalPriceEl.textContent = totalPrice.toFixed(2);
-        }
-
-        document.querySelectorAll(".order-btn").forEach(button => {
-            button.addEventListener("click", function () {
-                const productId = this.getAttribute("data-id");
-                const productName = this.getAttribute("data-nombre");
-                const productPrice = parseFloat(this.getAttribute("data-precio"));
-
-                let existingItem = document.querySelector(`#order-item-${productId}`);
-                if (existingItem) {
-                    let quantityInput = existingItem.querySelector(".quantity");
-                    quantityInput.value = parseInt(quantityInput.value) + 1;
-                } else {
-                    let li = document.createElement("li");
-                    li.className = "order-item";
-                    li.id = `order-item-${productId}`;
-                    li.setAttribute("data-price", productPrice);
-                    li.innerHTML = `
-                            <span>${productName} - $${productPrice.toFixed(2)}</span>
-                            <input type="number" class="quantity" value="1" min="1" style="width: 50px; margin-left: 10px;">
-                            <button class="remove-btn" style="margin-left: 10px;">Eliminar</button>
-                        `;
-                    orderList.appendChild(li);
-
-                    li.querySelector(".quantity").addEventListener("input", updateTotal);
-                    li.querySelector(".remove-btn").addEventListener("click", function () {
-                        li.remove();
-                        updateTotal();
-                    });
-                }
-                updateTotal();
-            });
-        });
-
-        // Funcionalidad para mostrar/ocultar la barra lateral
-        toggleSidebarBtn.addEventListener("click", function () {
-            sidebar.classList.toggle("collapsed");
-            document.getElementById("productContainer").classList.toggle("expanded");
-        });
-    });
-</script>
 
 <style>
-    /* Estilos para la barra lateral */
     .sidebar {
+        width: 250px;
+        padding: 20px;
+        background-color: #f8f9fa;
         position: fixed;
         right: 0;
         top: 0;
-        width: 300px;
-        height: 100vh;
-        background-color: #f8f9fa;
-        padding: 20px;
-        border-left: 2px solid #ddd;
-        overflow-y: auto;
-        transition: width 0.3s ease;
+        height: 100%;
+        box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.1);
     }
 
-        .sidebar.collapsed {
-            width: 0;
-            padding: 0;
-            overflow: hidden;
+        .sidebar h2 {
+            margin-top: 0;
         }
 
-    .toggle-btn {
-        position: absolute;
-        left: -35px;
-        top: 10px;
-        background-color: #ff69b4;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-size: 18px;
-        border-radius: 3px;
+    #order-list {
+        list-style-type: none;
+        padding: 0;
     }
 
-    .place-order-btn {
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+        .order-item input[type="number"] {
+            width: 40px;
+        }
+
+    .sidebar button {
+        background-color: #007bff;
+        color: #fff;
         width: 100%;
         padding: 10px;
-        background-color: #ff69b4;
-        color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 16px;
     }
-
-        .place-order-btn:hover {
-            background-color: #ff4081;
-        }
-
-    /* Ajustar el ancho de las tarjetas de producto cuando la barra lateral está oculta o expandida */
-    #productContainer.expanded {
-        margin-right: 300px; /* Ajuste según el tamaño de la barra lateral */
-        transition: margin-right 0.3s ease;
-    }
-
-    .card {
-        margin-bottom: 20px;
-        border-radius: 8px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-        .card .card-body {
-            text-align: center;
-        }
 
 </style>
 
+<script>
+    let order = [];
+
+    document.querySelectorAll('.order-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.getAttribute('data-id');
+            const nombre = button.getAttribute('data-nombre');
+            const precio = parseFloat(button.getAttribute('data-precio'));
+
+            addToOrder(id, nombre, precio);
+        });
+    });
+
+    function addToOrder(id, nombre, precio) {
+        const existingItem = order.find(item => item.id === id);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            order.push({ id, nombre, precio, quantity: 1 });
+        }
+        renderOrder();
+    }
+
+    function renderOrder() {
+        const orderList = document.getElementById("order-list");
+        orderList.innerHTML = "";
+        let total = 0;
+
+        order.forEach(item => {
+            total += item.precio * item.quantity;
+
+            const listItem = document.createElement("li");
+            listItem.classList.add("order-item");
+
+            listItem.innerHTML = `
+                    ${item.nombre} - $${item.precio.toFixed(2)}
+                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
+                    <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
+                `;
+
+            orderList.appendChild(listItem);
+        });
+
+        document.getElementById("total").innerText = `Total: $${total.toFixed(2)}`;
+    }
+
+    function updateQuantity(id, quantity) {
+        const item = order.find(item => item.id === id);
+        if (item) {
+            item.quantity = parseInt(quantity);
+            renderOrder();
+        }
+    }
+
+    function removeFromOrder(id) {
+        order = order.filter(item => item.id !== id);
+        renderOrder();
+    }
+
+    function finalizeOrder() {
+        alert("Pedido realizado. Total: $" + document.getElementById("total").innerText.split(": $")[1]);
+        order = [];
+        renderOrder();
+    }
+
+</script>
