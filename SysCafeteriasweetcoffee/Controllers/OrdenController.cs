@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SysCafeteriasweetcoffee.Models;
 using SysCafeteriasweetcoffee.Models.ViewModel;
+using SysCafeteriasweetcoffee.ViewModel;
 
 namespace SysCafeteriasweetcoffee.Controllers
 {
@@ -50,6 +51,24 @@ namespace SysCafeteriasweetcoffee.Controllers
             
             // Enviar el ViewModel a la vista
             return View(viewModel);
+        }
+
+        [HttpPost]
+
+        public IActionResult AgregarOrden(decimal Total)
+        {
+            Orden objOrden = new Orden();
+            objOrden.Total = Total;
+            objOrden.Estado = "EN PROCESO";
+            objOrden.Fecha = DateTime.Now;
+            objOrden.IdUsuario = Global.IdUsuarioLog;
+
+            _context.Orden.Add(objOrden);
+            //aqui se debe de procesar los detalles de la orden con un foreach y capturar en el parametro la lista de orden
+
+            _context.SaveChanges();
+
+            return View();
         }
 
         [HttpPost]

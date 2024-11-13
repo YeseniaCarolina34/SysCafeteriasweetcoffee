@@ -76,10 +76,12 @@ namespace SysCafeteriasweetcoffee.Controllers
                     // Redirigir según el rol (opcional)
                     if (usuario.IdRolNavigation.Nombre == "Administrador")
                     {
+                        Global.IdUsuarioLog = usuario.Id;
                         return RedirectToAction("Index", "Home"); // Redirigir al dashboard de admin
                     }
                     else if (usuario.IdRolNavigation.Nombre == "Cliente")
                     {
+                        Global.IdUsuarioLog = usuario.Id;
                         return RedirectToAction("Index", "Home"); // Redirigir a la página principal para clientes
                     }
                 }
@@ -332,7 +334,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             // Cerrar sesión del usuario actual
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-           
+            Global.IdUsuarioLog = 0;
             // Redirigir a la página de inicio de sesión después del cierre de sesión
             
             return RedirectToAction("Inicio", "Home");

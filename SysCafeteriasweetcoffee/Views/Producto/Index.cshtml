@@ -43,7 +43,7 @@
 <div class="sidebar" id="sidebar">
     <h2>Mi Orden</h2>
     <ul id="order-list"></ul>
-    <p id="total">Total: $0.00</p>
+    <input type="text" id="total" class="btn btn-primary" />
     <button onclick="finalizeOrder()">Realizar pedido</button>
 </div>
 
@@ -254,10 +254,37 @@
     }
 
     function finalizeOrder() {
-        alert("Pedido realizado. Total: $" + document.getElementById("total").innerText.split(": $")[1]);
+        // Obtiene el valor del input con id="total"
+        const total = document.getElementById("total").value;
+
+        // Muestra el mensaje de confirmación al usuario
+        alert("Pedido realizado. Total: $" + total);
+
+        // Resetea la orden y actualiza la vista
         order = [];
         renderOrder();
+
+        // Realiza la solicitud POST para activar el método en el controlador y enviar el valor de total
+        fetch('/Orden/AgregarOrden', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ total: total }) // Envía el total en el cuerpo de la solicitud
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Método AgregarOrden activado con el total enviado.");
+                } else {
+                    console.error("Error al procesar la solicitud en el servidor.");
+                }
+            })
+            .catch(error => {
+                console.error("Error en la conexión:", error);
+            });
     }
+
+
 
     // Función para mostrar/ocultar la barra lateral y ajustar el contenedor de productos
     function toggleSidebar() {
