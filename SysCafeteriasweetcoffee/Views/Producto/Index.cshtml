@@ -1,11 +1,10 @@
-﻿INDEX PRODUCTOSSSSSSSSSSS
-@model IEnumerable<SysCafeteriasweetcoffee.Models.Producto>
-<!-- Asegúrate de usar el namespace correcto -->
+﻿@model IEnumerable<SysCafeteriasweetcoffee.Models.Producto>
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="row">
+<div class="row" id="product-container">
     @foreach (var item in Model)
     {
         <div class="col-md-3 mb-3">
@@ -17,12 +16,18 @@
                         <small class="text-muted">Precio: @item.Precio</small><br>
                         <small class="text-muted">Descripción: @item.Descripcion</small><br>
                     </p>
-                    <div class="d-flex justify-content-between">
+                    <!--<div class="d-flex justify-content-between">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary">Ver</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Eliminar</a>
+                    </div>-->
+                    <div class="button-container">
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary">Ver</a>
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info">Editar</a>
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Eliminar</a>
                     </div>
-                    <button type="button" class="btn btn-primary order-btn"
+
+                    <button type="button" class="btn btn-pink mt-2 order-btn"
                             data-id="@item.Id"
                             data-nombre="@item.Nombre"
                             data-precio="@item.Precio">
@@ -35,29 +40,87 @@
 </div>
 
 <!-- Barra lateral para la orden -->
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
     <h2>Mi Orden</h2>
     <ul id="order-list"></ul>
     <p id="total">Total: $0.00</p>
     <button onclick="finalizeOrder()">Realizar pedido</button>
 </div>
 
+<!-- Botón para mostrar/ocultar la barra lateral de ordenes-->
+<button class="open-btn btn-pink" onclick="toggleSidebar()">Mi Orden</button>
 
 <style>
+
+    /* Estilo para centrar los botones */
+    .button-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        gap: 10px; /* Espaciado entre los botones */
+        flex-wrap: wrap; /* Permite que los botones se ajusten si el espacio es limitado */
+        padding-top: 10px;
+    }
+
+    /* Estilo de las cards */
+    .dessert-item {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .dessert-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+    #toggle-sidebar {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
     .sidebar {
-        width: 250px;
+        width: 280px;
         padding: 20px;
         background-color: #f8f9fa;
         position: fixed;
-        right: 0;
+        right: -280px; /* Asegurarse de que la barra lateral esté completamente oculta */
         top: 0;
         height: 100%;
         box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease-in-out; /* Suaviza la animación */
     }
+
+        .sidebar.active {
+            right: 0;
+        }
 
         .sidebar h2 {
             margin-top: 0;
         }
+
+        .sidebar button {
+            background-color: #ff69b4;
+            color: #fff;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .sidebar button:hover {
+                background-color: #ff1493;
+            }
 
     #order-list {
         list-style-type: none;
@@ -75,17 +138,61 @@
             width: 40px;
         }
 
-    .sidebar button {
-        background-color: #007bff;
+    /* Color rosado para botones */
+    .btn-pink {
+        background-color: #ff69b4;
         color: #fff;
-        width: 100%;
-        padding: 10px;
+    }
+
+        .btn-pink:hover {
+            background-color: #ff1493;
+        }
+
+    /* Botón "Eliminar" como "X" */
+    .remove-btn {
+        background: none;
         border: none;
-        border-radius: 5px;
+        font-size: 16px;
+        color: #dc3545;
         cursor: pointer;
     }
 
+    /* Ajuste del contenedor de productos cuando la barra lateral está activa */
+    .content-shift {
+        /* margin-right: 280px;  Asegúrate de que el contenedor también se ajuste cuando la barra lateral esté abierta */
+        margin-right:100px;
+        transition: margin-right 0.3s ease-in-out;
+        flex-wrap: wrap;
+        display: flex;
+        justify-content:left; /* Alinea las cards al centro */
+        gap: 20px; /* Espacio entre las cards */
+        padding: 20px;
+    }
+
+    /* Botón de abrir barra lateral */
+    .open-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Desplazamiento dinámico de cards */
+    .content {
+        transition: margin-right 0.3s ease;
+        
+    }
+
+    /* Clase para ajustar el margen cuando la barra lateral está abierta */
+    .sidebar-open .content {
+        margin-right: 280px; /* Ajuste del margen para la vista cuando la barra lateral está activa */
+    }
 </style>
+
 
 <script>
     let order = [];
@@ -122,10 +229,10 @@
             listItem.classList.add("order-item");
 
             listItem.innerHTML = `
-                    ${item.nombre} - $${item.precio.toFixed(2)}
-                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
-                    <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
-                `;
+                        ${item.nombre} - $${item.precio.toFixed(2)}
+                        <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
+                        <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
+                    `;
 
             orderList.appendChild(listItem);
         });
@@ -152,4 +259,11 @@
         renderOrder();
     }
 
+    // Función para mostrar/ocultar la barra lateral y ajustar el contenedor de productos
+    function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const productContainer = document.getElementById("product-container");
+        sidebar.classList.toggle("active");
+        productContainer.classList.toggle("content-shift");
+    }
 </script>
