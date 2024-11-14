@@ -43,7 +43,7 @@
 <div class="sidebar" id="sidebar">
     <h2>Mi Orden</h2>
     <ul id="order-list"></ul>
-    <input type="text" id="total" class="btn btn-primary" />
+    <input type="text" id="total" class="btn btn-primary" readonly /> <!-- Cambié a "readonly" para que no se edite -->
     <button onclick="finalizeOrder()">Realizar pedido</button>
 </div>
 
@@ -229,15 +229,16 @@
             listItem.classList.add("order-item");
 
             listItem.innerHTML = `
-                        ${item.nombre} - $${item.precio.toFixed(2)}
-                        <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
-                        <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
-                    `;
+                ${item.nombre} - $${item.precio.toFixed(2)}
+                <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
+                <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
+            `;
 
             orderList.appendChild(listItem);
         });
 
-        document.getElementById("total").innerText = `Total: $${total.toFixed(2)}`;
+        // Actualizar el valor del input con el total calculado
+        document.getElementById("total").value = total.toFixed(2);
     }
 
     function updateQuantity(id, quantity) {
