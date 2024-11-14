@@ -55,20 +55,28 @@ namespace SysCafeteriasweetcoffee.Controllers
 
         [HttpPost]
 
-        public IActionResult AgregarOrden(decimal Total)
+        public IActionResult AgregarOrden(decimal total, List<DetalleOrden> DetallesDeOrden)
         {
             Orden objOrden = new Orden();
-            objOrden.Total = Total;
+            objOrden.Total = total;
             objOrden.Estado = "EN PROCESO";
             objOrden.Fecha = DateTime.Now;
             objOrden.IdUsuario = Global.IdUsuarioLog;
 
             _context.Orden.Add(objOrden);
-            //aqui se debe de procesar los detalles de la orden con un foreach y capturar en el parametro la lista de orden
-
             _context.SaveChanges();
+            //aqui se debe de procesar los detalles de la orden con un foreach y capturar en el parametro la lista de orden
+            
+            foreach ( var item in DetallesDeOrden)
+            {
+                item.IdOrden = objOrden.Id;
 
-            return View();
+                _context.DetalleOrden.Add(item);
+                _context.SaveChanges();
+            }
+            
+
+            return RedirectToAction("Index","Producto");
         }
 
         [HttpPost]

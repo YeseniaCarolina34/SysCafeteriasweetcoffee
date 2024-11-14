@@ -38,14 +38,16 @@
         </div>
     }
 </div>
-
+<form asp-controller="Orden" asp-action="AgregarOrden">
+    <div class="sidebar" id="sidebar">
+        <h2>Mi Orden</h2>
+        <ul id="order-list"></ul>
+        <input type="text" id="total" name="total" class="btn btn-primary" readonly /> <!-- Cambié a "readonly" para que no se edite -->
+        <button type="submit">Realizar pedido</button>
+    </div>
+</form>
 <!-- Barra lateral para la orden -->
-<div class="sidebar" id="sidebar">
-    <h2>Mi Orden</h2>
-    <ul id="order-list"></ul>
-    <input type="text" id="total" class="btn btn-primary" readonly /> <!-- Cambié a "readonly" para que no se edite -->
-    <button onclick="finalizeOrder()">Realizar pedido</button>
-</div>
+
 
 <!-- Botón para mostrar/ocultar la barra lateral de ordenes-->
 <button class="open-btn btn-pink" onclick="toggleSidebar()">Mi Orden</button>
@@ -193,7 +195,6 @@
     }
 </style>
 
-
 <script>
     let order = [];
 
@@ -229,15 +230,14 @@
             listItem.classList.add("order-item");
 
             listItem.innerHTML = `
-                ${item.nombre} - $${item.precio.toFixed(2)}
-                <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
-                <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
-            `;
+                    ${item.nombre} - $${item.precio.toFixed(2)}
+                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
+                    <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
+                `;
 
             orderList.appendChild(listItem);
         });
 
-        // Actualizar el valor del input con el total calculado
         document.getElementById("total").value = total.toFixed(2);
     }
 
@@ -255,27 +255,27 @@
     }
 
     function finalizeOrder() {
-        // Obtiene el valor del input con id="total"
-        const total = document.getElementById("total").value;
+        const total = parseFloat(document.getElementById("total").value);
 
-        // Muestra el mensaje de confirmación al usuario
+        const detallesDeOrden = order.map(item => ({
+            IdProducto: item.id,
+            Cantidad: item.quantity,
+            Precio: item.precio
+        }));
+        console.log(detallesDeOrden);
         alert("Pedido realizado. Total: $" + total);
 
-        // Resetea la orden y actualiza la vista
-        order = [];
-        renderOrder();
-
-        // Realiza la solicitud POST para activar el método en el controlador y enviar el valor de total
         fetch('/Orden/AgregarOrden', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ total: total }) // Envía el total en el cuerpo de la solicitud
+            //revisa el console que este bien escrito para y que detalles orden el que este abajo este escrito igual mente escrito como el controlador
+            body: JSON.stringify({ total: total, DetallesDeOrden: detallesDeOrden })
         })
             .then(response => {
                 if (response.ok) {
-                    console.log("Método AgregarOrden activado con el total enviado.");
+                    console.log("Método AgregarOrden activado con los detalles de la orden enviados.");
                 } else {
                     console.error("Error al procesar la solicitud en el servidor.");
                 }
@@ -283,11 +283,11 @@
             .catch(error => {
                 console.error("Error en la conexión:", error);
             });
+
+        order = [];
+        renderOrder();
     }
 
-
-
-    // Función para mostrar/ocultar la barra lateral y ajustar el contenedor de productos
     function toggleSidebar() {
         const sidebar = document.getElementById("sidebar");
         const productContainer = document.getElementById("product-container");
@@ -295,3 +295,6 @@
         productContainer.classList.toggle("content-shift");
     }
 </script>
+
+
+
