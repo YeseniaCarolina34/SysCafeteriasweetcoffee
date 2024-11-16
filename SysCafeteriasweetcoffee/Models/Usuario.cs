@@ -26,8 +26,9 @@ public partial class Usuario
     public string Apellido { get; set; } = null!;
 
     [Required(ErrorMessage = "El login es obligatorio.")]
-    [StringLength(25)]
+    [StringLength(25, MinimumLength = 8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres.")]
     [Unicode(false)]
+    [EmailAddress(ErrorMessage = "El formato del correo no es válido.")]
     public string Login { get; set; } = null!;
 
     [Required(ErrorMessage = "La contraseña es obligatoria.")]
