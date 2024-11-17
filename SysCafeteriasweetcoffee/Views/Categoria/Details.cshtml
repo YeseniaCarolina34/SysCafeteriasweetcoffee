@@ -26,8 +26,14 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>
+
+<div>
+    <a asp-action="Index">
+        <button class="view-all-btn">Back to List</button>
+    </a>
+</div>
+
 <!-- Sección para mostrar los productos asociados a la categoría -->
 <div>
     <h2 class="mt-5">Productos en esta Categoría</h2>
@@ -51,9 +57,6 @@
                             <a asp-action="Edit" asp-controller="Producto" asp-route-id="@producto.Id" class="btn btn-outline-info">Editar</a>
                             <a asp-action="Delete" asp-controller="Producto" asp-route-id="@producto.Id" class="btn btn-outline-danger">Eliminar</a>
                         </div>
-                        <a asp-controller="#" asp-action="#">
-                            <button class="view-all-btn">Ordenar</button>
-                        </a>
                     </div>
                 </div>
             </div>

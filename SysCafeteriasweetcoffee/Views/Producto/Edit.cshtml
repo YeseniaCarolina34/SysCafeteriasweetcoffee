@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
+<head>
+    <link rel="stylesheet" href="~/css/formulario.css">
+</head>
 <h1>Edit</h1>
 
 <h4>Producto</h4>
@@ -39,15 +41,17 @@
                 <span asp-validation-for="img" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary btn-spacing" />
             </div>
         </form>
     </div>
 </div>
-
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">
+        <button class="view-all-btn">Back to List</button>
+    </a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

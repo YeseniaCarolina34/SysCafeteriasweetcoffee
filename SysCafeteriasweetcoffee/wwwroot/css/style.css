@@ -87,3 +87,8 @@ body {
     border-radius: 5px;
     margin-top: 20px;
 }
+
+/* Separación del botón */
+.btn-spacing {
+    margin-top: 15px; /* Espacio superior */
+}
