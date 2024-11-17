@@ -1,4 +1,6 @@
-﻿@model IEnumerable<SysCafeteriasweetcoffee.Models.Producto>
+﻿últimos cambios 17/11/24
+
+@model IEnumerable<SysCafeteriasweetcoffee.Models.Producto>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,7 +12,7 @@
 <p>
     <div>
         <a asp-action="Create">
-            <button class="view-all-btn">Create New</button>
+            <button class="view-all-btn">Crear Nuevo</button>
         </a>
     </div>
 
@@ -21,8 +23,8 @@
 <form method="get">
     <!-- Barra de búsqueda por nombre de producto -->
     <input type="text" name="searchString" value="@ViewData["searchString"]" placeholder="Buscar producto..." />
-    
-     <select name="idCategoria">
+
+    <select name="idCategoria">
         <option value="">Seleccionar Categoría</option>
         @foreach (var categoria in ViewData["Categorias"] as SelectList)
         {
@@ -31,7 +33,7 @@
         }
 
     </select>
-    
+
     <button type="submit">Buscar</button>
 </form>
 <div class="row" id="product-container">
@@ -73,13 +75,12 @@
     <div class="sidebar" id="sidebar">
         <h2>Mi Orden</h2>
         <ul id="order-list"></ul>
-        <input type="text" id="total" name="total" class="btn btn-primary" readonly /> <!-- Cambié a "readonly" para que no se edite -->
+        <center><input type="text" id="total" name="total" class="btn btn-primary" readonly /></center> <!-- Cambié a "readonly" para que no se edite -->
+        <br />
         <button type="submit">Realizar pedido</button>
     </div>
 </form>
 <!-- Barra lateral para la orden -->
-
-
 <!-- Botón para mostrar/ocultar la barra lateral de ordenes-->
 <button class="open-btn btn-pink" onclick="toggleSidebar()">Mi Orden</button>
 
@@ -193,11 +194,11 @@
     /* Ajuste del contenedor de productos cuando la barra lateral está activa */
     .content-shift {
         /* margin-right: 280px;  Asegúrate de que el contenedor también se ajuste cuando la barra lateral esté abierta */
-        margin-right:100px;
+        margin-right: 100px;
         transition: margin-right 0.3s ease-in-out;
         flex-wrap: wrap;
         display: flex;
-        justify-content:left; /* Alinea las cards al centro */
+        justify-content: left; /* Alinea las cards al centro */
         gap: 20px; /* Espacio entre las cards */
         padding: 20px;
     }
@@ -217,7 +218,6 @@
     /* Desplazamiento dinámico de cards */
     .content {
         transition: margin-right 0.3s ease;
-        
     }
 
     /* Clase para ajustar el margen cuando la barra lateral está abierta */
@@ -247,6 +247,16 @@
             order.push({ id, nombre, precio, quantity: 1 });
         }
         renderOrder();
+        openSidebar(); // Llama a la función para abrir el sidebar
+    }
+
+    function openSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        if (!sidebar.classList.contains("active")) {
+            sidebar.classList.add("active"); // Asegúrate de que se abra solo si está cerrado
+            const productContainer = document.getElementById("product-container");
+            productContainer.classList.add("content-shift");
+        }
     }
 
     function renderOrder() {
@@ -261,10 +271,10 @@
             listItem.classList.add("order-item");
 
             listItem.innerHTML = `
-                    ${item.nombre} - $${item.precio.toFixed(2)}
-                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
-                    <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
-                `;
+                        ${item.nombre} - $${item.precio.toFixed(2)}
+                        <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
+                        <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
+                    `;
 
             orderList.appendChild(listItem);
         });
