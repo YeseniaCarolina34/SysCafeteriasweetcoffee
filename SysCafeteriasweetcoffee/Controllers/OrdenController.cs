@@ -74,10 +74,10 @@ namespace SysCafeteriasweetcoffee.Controllers
                 _context.DetalleOrden.Add(item);
                 _context.SaveChanges();
             }
-            
 
             return RedirectToAction("Index","Producto");
         }
+
 
         [HttpPost]
         public IActionResult AgregarAlOrden(Dictionary<int, int> productos)
@@ -307,6 +307,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         }
 
         // GET: Orden/Delete/5
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -326,6 +327,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         }
 
         // POST: Orden/Delete/5
+        [Authorize(Roles = "Administrador")] // Solo los administradores pueden acceder a estas acciones
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

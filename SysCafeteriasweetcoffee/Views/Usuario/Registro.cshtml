@@ -53,7 +53,7 @@
         }
 
         label {
-            color: #081F5C; 
+            color: #081F5C;
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
@@ -102,7 +102,7 @@
 <body>
     <div class="form-container">
         <h2>Registro de Cliente</h2>
-        <form asp-controller="Usuario" asp-action="Registro" method="post">
+        <form asp-controller="Usuario" asp-action="Registro" method="post" onsubmit="return validateForm(event)">
             <div class="form-group">
                 <label for="nombre">Nombre</label>
                 <input asp-for="Nombre" class="form-control" />
@@ -132,10 +132,14 @@
                 <button type="submit" class="btn-primary">Registrar</button>
             </div>
         </form>
-    </div>
 
-    @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
-    }
+    </div>
+    <!-- Aquí incluimos el archivo JS -->
+    <script src="~/js/validation.js"></script>
+    <script>
+        // Asociar la validación al formulario
+        const form = document.querySelector("#registrationForm");
+        form.addEventListener("submit", validateForm);
+    </script>
 </body>
 </html>

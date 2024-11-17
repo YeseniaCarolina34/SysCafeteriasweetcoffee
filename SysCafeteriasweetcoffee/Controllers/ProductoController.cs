@@ -22,19 +22,41 @@ namespace SysCafeteriasweetcoffee.Controllers
         public ProductoController(BDContext context)
         {
             _context = context;
+
         }
+
 
         // GET: Producto
-        public async Task<IActionResult> Index()
+        // GET: Producto
+        public async Task<IActionResult> Index(string searchString, int? idCategoria)
         {
-            var bDContext = _context.Producto.Include(p => p.IdCategoriaNavigation);
-            return View(await bDContext.ToListAsync());
+            // Obtener las categorías
+            ViewData["Categorias"] = new SelectList(await _context.Categoria.ToListAsync(), "Id", "Nombre");
+
+            var productos = _context.Producto.Include(p => p.IdCategoriaNavigation).AsQueryable();
+
+            // Filtro por nombre de producto
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                productos = productos.Where(p => p.Nombre.Contains(searchString));
+            }
+
+            // Filtro por categoría
+            if (idCategoria.HasValue)
+            {
+                productos = productos.Where(p => p.IdCategoria == idCategoria);
+            }
+
+            return View(await productos.ToListAsync());
         }
 
+
+
+
         // GET:Producto PARA QUE FUNCIONE IMAGEN
-       // public async Task<IActionResult> Index()
-       // {
-           // return View(await_context.Producto.ToListAsync());
+        // public async Task<IActionResult> Index()
+        // {
+        // return View(await_context.Producto.ToListAsync());
         //}
 
 
@@ -232,6 +254,14 @@ namespace SysCafeteriasweetcoffee.Controllers
             return _context.Producto.Any(e => e.Id == id);
         }
 
+       
+
+
+
     }
 
+
+
 }
+
+

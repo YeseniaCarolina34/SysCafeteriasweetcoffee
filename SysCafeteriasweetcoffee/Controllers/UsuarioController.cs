@@ -328,17 +328,17 @@ namespace SysCafeteriasweetcoffee.Controllers
             return _context.Usuario.Any(e => e.Id == id);
         }
 
+        [HttpPost]
         [AllowAnonymous]
-        // Acción de Logout
         public async Task<IActionResult> Logout()
         {
             // Cerrar sesión del usuario actual
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             Global.IdUsuarioLog = 0;
             // Redirigir a la página de inicio de sesión después del cierre de sesión
-            
             return RedirectToAction("Inicio", "Home");
         }
+
 
 
         [AllowAnonymous]
