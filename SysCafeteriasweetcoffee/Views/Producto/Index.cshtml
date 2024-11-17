@@ -262,7 +262,7 @@
             Cantidad: item.quantity,
             Precio: item.precio
         }));
-        console.log(detallesDeOrden);
+        Console.log(detallesDeOrden);
         alert("Pedido realizado. Total: $" + total);
 
         fetch('/Orden/AgregarOrden', {
@@ -271,7 +271,7 @@
                 'Content-Type': 'application/json'
             },
             //revisa el console que este bien escrito para y que detalles orden el que este abajo este escrito igual mente escrito como el controlador
-            body: JSON.stringify({ total: total, DetallesDeOrden: detallesDeOrden })
+            body: JSON.stringify({ total: total, DetalleDeOrden: detallesDeOrden })
         })
             .then(response => {
                 if (response.ok) {
