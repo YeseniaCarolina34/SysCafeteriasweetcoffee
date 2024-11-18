@@ -4,61 +4,63 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<head>
+    <link rel="stylesheet" href="~/css/formulario.css">
+</head>
 
-<div>
-    <h4>Usuario</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Apellido)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Login)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Login)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaRegistro)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaRegistro)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdRolNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdRolNavigation.Id)
-        </dd>
-    </dl>
+<div class="container mt-4">
+    <h2 class="text-center">Detalles del Usuario</h2>
+    <div class="details-form mt-4">
+        <div class="row">
+            <!-- Columna 1 -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Nombre:</label>
+                    <div class="details-field">
+                        @Html.DisplayFor(model => model.Nombre)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Login:</label>
+                    <div class="details-field">
+                        @Html.DisplayFor(model => model.Login)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Fecha de Registro:</label>
+                    <div class="details-field">
+                        @Html.DisplayFor(model => model.FechaRegistro)
+                    </div>
+                </div>
+            </div>
+            <!-- Columna 2 -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Apellido:</label>
+                    <div class="details-field">
+                        @Html.DisplayFor(model => model.Apellido)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estatus:</label>
+                    <div class="details-field">
+                        @Html.DisplayFor(model => model.Estatus)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Rol:</label>
+                    <div class="details-field">
+                        @Html.DisplayFor(model => model.IdRolNavigation.Id)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="button-group text-center mt-4">
+        <a asp-action="Edit" asp-route-id="@Model?.Id"><button class="view-all-btn">Editar</button></a>
+        <a asp-action="Index"><button class="view-all-btn">Regresar</button></a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-</div>
-<div>
-    <a asp-action="Index">
-        <button class="view-all-btn">Back to List</button>
-    </a>
-</div>
+
