@@ -7,35 +7,28 @@
 <head>
     <link rel="stylesheet" href="~/css/formulario.css">
 </head>
+<h1>Eliminar Rol</h1>
 
-<div class="container mt-4">
-    <h2 class="text-center text-primary">Eliminar</h2>
-    <div class="details-form">
-        <h3 class="text-center mb-3">¿Estás seguro que deseas eliminar este rol?</h3>
+<h3>¿Estás seguro que deseas eliminar este rol?</h3>
+<hr />
 
-        <!-- Campo Rol -->
-        <div class="form-group">
-            <label class="form-label">Rol:</label>
-            <div class="details-field">
-                @Html.DisplayFor(model => model.Nombre)
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label class="control-label">Rol</label>
+                <input asp-for="Nombre" class="form-control" readonly />
             </div>
-        </div>
-        <div class="button-group text-center">
-            <!-- Botón Delete -->
-            <form asp-action="Delete" style="display: inline;">
-                <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Delete" class="btn btn-danger" />
-            </form>
+            <div class="form-group">
+                <input type="submit" value="Eliminar" class="btn btn-primary btn-spacing" />
+            </div>
+        </form>
+    </div>
+</div>
 
-           
-        </div>
-        
-    </div>
-    <!-- Botones -->
-    <!-- Botón Back to List -->
-    <div class="btn-back">
-        <a asp-action="Index">
-            <button class="view-all-btn">Regresar</button>
-        </a>
-    </div>
+<div>
+<a asp-action="Index">
+    <button class="view-all-btn">Back to List</button>
+</a>
 </div>
