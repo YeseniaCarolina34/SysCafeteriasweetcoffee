@@ -27,7 +27,6 @@ namespace SysCafeteriasweetcoffee.Controllers
 
 
         // GET: Producto
-        // GET: Producto
         public async Task<IActionResult> Index(string searchString, int? idCategoria)
         {
             // Obtener las categorías
@@ -47,11 +46,11 @@ namespace SysCafeteriasweetcoffee.Controllers
                 productos = productos.Where(p => p.IdCategoria == idCategoria);
             }
 
+
             return View(await productos.ToListAsync());
         }
 
-
-
+      
 
         // GET:Producto PARA QUE FUNCIONE IMAGEN
         // public async Task<IActionResult> Index()
