@@ -54,7 +54,6 @@ namespace SysCafeteriasweetcoffee.Controllers
         }
 
         [HttpPost]
-
         public IActionResult AgregarOrden(decimal total, List<DetalleOrden> DetallesDeOrden)
         {
             Orden objOrden = new Orden();
