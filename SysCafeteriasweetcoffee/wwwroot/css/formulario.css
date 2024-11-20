@@ -137,3 +137,55 @@ form {
     .category-actions .btn {
         margin: 0 10px;
     }
+/* Fondo y estructura general */
+.container {
+    background-color: #fff3e0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+/* Estilo de los campos de detalles */
+.details-field {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Etiquetas */
+label {
+    font-weight: bold;
+    color: #0A0A0A;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Botones */
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #f86b87;
+    border: none;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #d05870;
+    }
+
+.btn-secondary {
+    background-color: #ddd;
+    border: none;
+    color: #333;
+}
+
+    .btn-secondary:hover {
+        background-color: #bbb;
+    }
