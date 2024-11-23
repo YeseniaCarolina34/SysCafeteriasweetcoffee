@@ -19,7 +19,7 @@ public partial class Orden
 
     public int? IdUsuario { get; set; }
 
-    [MaxLength(20)]  
+    [MaxLength(20)]
     public string? Estado { get; set; }
 
     [InverseProperty("IdOrdenNavigation")]

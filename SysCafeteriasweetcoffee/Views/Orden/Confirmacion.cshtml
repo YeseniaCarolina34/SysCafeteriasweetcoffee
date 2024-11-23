@@ -1,4 +1,8 @@
-﻿@model Orden
-
-<h2>Gracias por tu orden</h2>
-<p>El total de tu orden es $@Model.Total.</p>
+﻿<div id="sidebar">
+    <ul id="order-list"></ul>
+    <div>
+        <label>Total: </label>
+        <input id="total" type="text" readonly value="0.00">
+    </div>
+    <button onclick="finalizeOrder()">Finalizar Pedido</button>
+</div>

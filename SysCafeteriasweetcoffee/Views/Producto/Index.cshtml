@@ -1,5 +1,4 @@
-﻿
-@model IEnumerable<SysCafeteriasweetcoffee.Models.Producto>
+﻿@model IEnumerable<SysCafeteriasweetcoffee.Models.Producto>
 
 @{
     ViewData["Title"] = "Index";
@@ -269,10 +268,10 @@
             listItem.classList.add("order-item");
 
             listItem.innerHTML = `
-                        ${item.nombre} - $${item.precio.toFixed(2)}
-                        <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
-                        <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
-                    `;
+                            ${item.nombre} - $${item.precio.toFixed(2)}
+                            <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
+                            <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
+                        `;
 
             orderList.appendChild(listItem);
         });
@@ -309,26 +308,22 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                total: total,
-                DetallesDeOrden: detallesDeOrden
-            })
+            //revisa el console que este bien escrito para y que detalles orden el que este abajo este escrito igual mente escrito como el controlador
+            body: JSON.stringify({ total: total, DetalleDeOrden: detallesDeOrden })
         })
             .then(response => {
                 if (response.ok) {
                     console.log("Método AgregarOrden activado con los detalles de la orden enviados.");
-                    alert("Pedido realizado con éxito.");
-                    // Aquí puedes redirigir o limpiar la vista después del éxito
-                    order = []; // Limpia la orden local
-                    renderOrder();
                 } else {
-                    console.error("Error al procesar la solicitud en el servidor.");
+                    onsole.error("Error al procesar la solicitud en el servidor.");
                 }
             })
             .catch(error => {
-                console.error("Error en la conexión:", error);
+                Console.error("Error en la conexión:", error);
             });
 
+        order = [];
+        renderOrder();
     }
 
     function toggleSidebar() {
@@ -338,6 +333,3 @@
         productContainer.classList.toggle("content-shift");
     }
 </script>
-
-
-

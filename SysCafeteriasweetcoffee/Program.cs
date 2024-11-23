@@ -6,12 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios al contenedor
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null; // Deshabilita el cambio de formato de nombres
-    });
 
 // Configurar la cadena de conexión y agregar el contexto de la base de datos
 builder.Services.AddDbContext<BDContext>(opt =>

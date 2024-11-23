@@ -48,35 +48,35 @@ namespace SysCafeteriasweetcoffee.Controllers
                 Productos = productos,
                 OrdenActual = ordenActual
             };
-            
+
             // Enviar el ViewModel a la vista
             return View(viewModel);
         }
 
         [HttpPost]
+
         public IActionResult AgregarOrden(decimal total, List<DetalleOrden> DetallesDeOrden)
         {
-            Orden objOrden = new Orden
-            {
-                Total = total,
-                Estado = "EN PROCESO",
-                Fecha = DateTime.Now,
-                IdUsuario = Global.IdUsuarioLog
-            };
+            Orden objOrden = new Orden();
+            objOrden.Total = total;
+            objOrden.Estado = "EN PROCESO";
+            objOrden.Fecha = DateTime.Now;
+            objOrden.IdUsuario = Global.IdUsuarioLog;
 
             _context.Orden.Add(objOrden);
             _context.SaveChanges();
+            //aqui se debe de procesar los detalles de la orden con un foreach y capturar en el parametro la lista de orden
 
             foreach (var item in DetallesDeOrden)
             {
                 item.IdOrden = objOrden.Id;
+
                 _context.DetalleOrden.Add(item);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
 
             return RedirectToAction("Index", "Producto");
         }
-
 
 
         [HttpPost]
@@ -171,25 +171,23 @@ namespace SysCafeteriasweetcoffee.Controllers
         // Método para confirmar la orden
         [HttpPost]
         public IActionResult ConfirmarOrden(int ordenId)
-		{
-			var orden = _context.Orden.Include(o => o.DetalleOrden).FirstOrDefault(o => o.Id == ordenId);
-			if (orden == null || orden.DetalleOrden == null || !orden.DetalleOrden.Any())
-			{
-				return NotFound("La orden no existe o no tiene detalles.");
-			}
+        {
+            var orden = _context.Orden.Include(o => o.DetalleOrden).FirstOrDefault(o => o.Id == ordenId);
+            if (orden == null || orden.DetalleOrden == null || !orden.DetalleOrden.Any())
+            {
+                return NotFound("La orden no existe o no tiene detalles.");
+            }
 
-			var total = orden.DetalleOrden
-				.Where(d => d.Precio != null)  // Asegurarse de que el precio no sea null
-				.Sum(d => d.Precio * d.Cantidad);
+            var total = orden.DetalleOrden
+                .Where(d => d.Precio != null)  // Asegurarse de que el precio no sea null
+                .Sum(d => d.Precio * d.Cantidad);
 
-			orden.Total = total;
-			orden.Estado = "confirmada";
-			_context.SaveChanges();
+            orden.Total = total;
+            orden.Estado = "confirmada";
+            _context.SaveChanges();
 
-			return View("Confirmacion", orden);
-		}
-
-
+            return View("Confirmacion", orden);
+        }
 
 
 
@@ -200,8 +198,10 @@ namespace SysCafeteriasweetcoffee.Controllers
 
 
 
-		// GET: Orden
-		public async Task<IActionResult> Index()
+
+
+        // GET: Orden
+        public async Task<IActionResult> Index()
         {
             var bDContext = _context.Orden
     .Include(o => o.IdUsuarioNavigation)
