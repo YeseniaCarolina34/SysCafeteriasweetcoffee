@@ -268,10 +268,10 @@
             listItem.classList.add("order-item");
 
             listItem.innerHTML = `
-                            ${item.nombre} - $${item.precio.toFixed(2)}
-                            <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
-                            <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
-                        `;
+                                ${item.nombre} - $${item.precio.toFixed(2)}
+                                <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value)">
+                                <button onclick="removeFromOrder('${item.id}')">Eliminar</button>
+                            `;
 
             orderList.appendChild(listItem);
         });
