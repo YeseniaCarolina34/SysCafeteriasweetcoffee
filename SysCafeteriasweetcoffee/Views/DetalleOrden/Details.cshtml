@@ -4,39 +4,55 @@
     ViewData["Title"] = "Details";
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/formulario.css">
+</head>
+
 <h1>Details</h1>
 
-<div>
-    <h4>DetalleOrden</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cantidad)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cantidad)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdOrdenNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdOrdenNavigation.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdProductoNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdProductoNavigation.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<h4>Detalle de Orden</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="details-form">
+            <!-- Grupo Cantidad -->
+            <div class="form-group">
+                <label>Cantidad:</label>
+                <input type="text" class="form-control" value="@Model.Cantidad" readonly />
+            </div>
+
+            <!-- Grupo Precio -->
+            <div class="form-group">
+                <label>Precio:</label>
+                <input type="text" class="form-control" value="@Model.Precio" readonly />
+            </div>
+
+            <!-- Grupo Orden -->
+            <div class="form-group">
+                <label>Orden:</label>
+                <input type="text" class="form-control" value="@Model.IdOrdenNavigation?.Id" readonly />
+            </div>
+
+            <!-- Grupo Producto -->
+            <div class="form-group">
+                <label>Producto:</label>
+                <input type="text" class="form-control" value="@Model.IdProductoNavigation?.Id" readonly />
+            </div>
+
+            <!-- Botones -->
+            <div class="btn-spacing">
+                <a asp-action="Edit" asp-route-id="@Model?.Id">
+                    <button type="button" class="view-all-btn">Edit</button>
+                </a>
+            </div>
+        </form>
+
+        <!-- Botón Regresar -->
+        <div class="btn-back">
+            <a asp-action="Index">
+                <button class="view-all-btn">Regresar</button>
+            </a>
+        </div>
+    </div>
 </div>

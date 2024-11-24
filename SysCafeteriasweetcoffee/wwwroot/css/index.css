@@ -1,0 +1,72 @@
+﻿/* index.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f3ff;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #7e57c2;
+}
+
+.role-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.role-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.role-info h2 {
+    color: #7e57c2;
+    margin: 0;
+}
+
+.role-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-action {
+    background-color: #7e57c2;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+    .btn-action:hover {
+        background-color: #5e3b94;
+    }
+
+.btn-primary {
+    background-color: #7e57c2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .btn-primary:hover {
+        background-color: #5e3b94;
+    }

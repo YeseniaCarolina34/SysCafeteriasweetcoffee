@@ -7,69 +7,69 @@
 <head>
     <link rel="stylesheet" href="~/css/formulario.css">
 </head>
+<h1>Eliminar Usuario</h1>
 
-<div class="container mt-4">
-    
-    <div class="details-form">
-        <h3 class="text-center mb-3">¿Estás seguro que deseas eliminar este usuario?</h3>
+<h3>¿Estás seguro que deseas eliminar este usuario?</h3>
+<hr />
 
-        <!-- Campos del Usuario en dos columnas -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="form-label">Nombre:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.Nombre)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Login:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.Login)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Fecha de Registro:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.FechaRegistro)
-                    </div>
-                </div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Grupo de Nombre -->
+            <div class="form-group">
+                <label class="control-label">Nombre</label>
+                <input asp-for="Nombre" class="form-control" readonly />
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="form-label">Apellido:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.Apellido)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Estatus:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.Estatus)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Rol:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.IdRolNavigation.Id)
-                    </div>
-                </div>
+
+            <!-- Grupo de Apellido -->
+            <div class="form-group">
+                <label class="control-label">Apellido</label>
+                <input asp-for="Apellido" class="form-control" readonly />
             </div>
-        </div>
 
-        <!-- Botones -->
-        <div class="button-group text-center mt-4">
-            <form asp-action="Delete" style="display: inline;">
-                <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Delete" class="btn btn-danger" />
-            </form>
-        </div>
-    </div>
+            <!-- Grupo de Login -->
+            <div class="form-group">
+                <label class="control-label">Login</label>
+                <input asp-for="Login" class="form-control" readonly />
+            </div>
 
-    <!-- Botón Back to List -->
-    <div class="btn-back text-center mt-3">
-        <a asp-action="Index">
-            <button class="view-all-btn">Regresar</button>
-        </a>
+            <!-- Grupo de Password -->
+            <div class="form-group">
+                <label class="control-label">Password</label>
+                <input asp-for="Password" class="form-control" readonly />
+            </div>
+
+            <!-- Grupo de Estatus -->
+            <div class="form-group">
+                <label class="control-label">Estatus</label>
+                <input asp-for="Estatus" class="form-control" readonly />
+            </div>
+
+            <!-- Grupo de Fecha de Registro -->
+            <div class="form-group">
+                <label class="control-label">Fecha de Registro</label>
+                <input type="text" class="form-control" value="@Model.FechaRegistro.ToString("yyyy-MM-dd")" readonly />
+            </div>
+
+            <!-- Grupo de Rol -->
+            <div class="form-group">
+                <label class="control-label">Rol</label>
+                <input type="text" class="form-control" value="@Model.IdRolNavigation?.Nombre" readonly />
+            </div>
+
+            <!-- Botón de Eliminar -->
+            <div class="form-group">
+                <input type="submit" value="Eliminar" class="btn btn-primary btn-spacing" />
+            </div>
+        </form>
     </div>
+</div>
+
+<!-- Botón Back to List -->
+<div>
+    <a asp-action="Index">
+        <button class="view-all-btn">Back to List</button>
+    </a>
 </div>

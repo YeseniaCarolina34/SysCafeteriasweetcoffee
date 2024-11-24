@@ -3,64 +3,64 @@
 @{
     ViewData["Title"] = "Details";
 }
-
 <head>
     <link rel="stylesheet" href="~/css/formulario.css">
 </head>
+<h1>Details</h1>
 
-<div class="container mt-4">
-    <h2 class="text-center">Detalles del Usuario</h2>
-    <div class="details-form mt-4">
-        <div class="row">
-            <!-- Columna 1 -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="form-label">Nombre:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.Nombre)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Login:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.Login)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Fecha de Registro:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.FechaRegistro)
-                    </div>
-                </div>
+<h4>Usuario</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="details-form">
+            <!-- Grupo de Nombre -->
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" class="form-control" value="@Model.Nombre" readonly />
             </div>
-            <!-- Columna 2 -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="form-label">Apellido:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.Apellido)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Estatus:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.Estatus)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Rol:</label>
-                    <div class="details-field">
-                        @Html.DisplayFor(model => model.IdRolNavigation.Id)
-                    </div>
-                </div>
+            <!-- Grupo de Apellido -->
+            <div class="form-group">
+                <label>Apellido:</label>
+                <input type="text" class="form-control" value="@Model.Apellido" readonly />
             </div>
+            <!-- Grupo de Login -->
+            <div class="form-group">
+                <label>Login:</label>
+                <input type="text" class="form-control" value="@Model.Login" readonly />
+            </div>
+            <!-- Grupo de Password -->
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="text" class="form-control" value="@Model.Password" readonly />
+            </div>
+            <!-- Grupo de Estatus -->
+            <div class="form-group">
+                <label>Estatus:</label>
+                <input type="text" class="form-control" value="@Model.Estatus" readonly />
+            </div>
+            <!-- Grupo de Fecha de Registro -->
+            <div class="form-group">
+                <label>Fecha de Registro:</label>
+                <input type="text" class="form-control" value="@Model.FechaRegistro.ToString("yyyy-MM-dd")" readonly />
+            </div>
+            <!-- Grupo de Rol -->
+            <div class="form-group">
+                <label>Rol:</label>
+                <input type="text" class="form-control" value="@Model.IdRolNavigation?.Nombre" readonly />
+            </div>
+            <!-- Botones -->
+            <div class="btn-spacing">
+                <a asp-action="Edit" asp-route-id="@Model?.Id">
+                    <button type="button" class="view-all-btn">Edit</button>
+                </a>
+            </div>
+        </form>
+        <!-- Botón Back to List -->
+        <div class="btn-back">
+            <a asp-action="Index">
+                <button class="view-all-btn">Regresar</button>
+            </a>
         </div>
     </div>
-
-    <!-- Botones de acción -->
-    <div class="button-group text-center mt-4">
-        <a asp-action="Edit" asp-route-id="@Model?.Id"><button class="view-all-btn">Editar</button></a>
-        <a asp-action="Index"><button class="view-all-btn">Regresar</button></a>
-    </div>
 </div>
-
