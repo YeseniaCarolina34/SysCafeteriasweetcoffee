@@ -74,7 +74,7 @@ namespace SysCafeteriasweetcoffee.Controllers
                 _context.DetalleOrden.Add(item);
                 _context.SaveChanges();
             }
-
+            //no hice nada
             return RedirectToAction("Index", "Producto");
         }
 
