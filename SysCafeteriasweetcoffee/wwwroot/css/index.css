@@ -1,14 +1,14 @@
 ﻿/* index.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f3ff;
+    background-color: #FCE4EC;
     margin: 0;
     padding: 20px;
 }
 
 h1 {
     text-align: center;
-    color: #7e57c2;
+    color: #000000;
 }
 
 .role-container {
@@ -70,3 +70,86 @@ h1 {
     .btn-primary:hover {
         background-color: #5e3b94;
     }
+    /* Tabla estilizada */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+    background-color: #FA9EBC;
+    color: white;
+}
+
+.table th, .table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table a {
+    color: #7e57c2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.table a:hover {
+    color: #F8F3EA;
+    text-decoration: underline;
+}
+/* Estilo para los botones personalizados */
+.btn-custom {
+    display: inline-block; /* Que parezcan botones */
+    background-color: #FA9EBC; /* Fondo rosa */
+    color: white !important; /* Forzar texto blanco, evita color azul */
+    padding: 12px 20px; /* Relleno más grande */
+    border-radius: 12px; /* Bordes redondeados */
+    text-align: center; /* Centrar texto */
+    font-size: 16px; /* Tamaño de texto más grande */
+    font-weight: bold; /* Texto en negrita */
+    text-decoration: none !important; /* Elimina subrayado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    transition: background-color 0.3s ease; /* Transición suave */
+    margin: 5px; /* Espaciado entre botones */
+}
+
+    /* Hover para los botones */
+    .btn-custom:hover {
+        background-color: #f0829b; /* Fondo más oscuro */
+        color: white; /* Asegura que el texto permanezca blanco */
+        cursor: pointer; /* Cambia a mano */
+    }
+.button-group {
+    display: flex; /* Los botones en línea */
+    gap: 10px; /* Espaciado entre los botones */
+    justify-content: center; /* Centrar los botones dentro del contenedor */
+    align-items: center; /* Alinearlos verticalmente */
+}
+
+
+/* Asegurarse de que no se vea como enlace */
+a.btn-custom {
+    color: white !important; /* Forzar texto blanco */
+    text-decoration: none !important; /* Elimina el subrayado */
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    background-color: #FFF9E6; /* Amarillo más claro */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

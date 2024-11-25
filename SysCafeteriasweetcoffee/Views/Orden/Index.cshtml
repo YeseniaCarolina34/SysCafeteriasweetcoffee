@@ -3,8 +3,12 @@
 @{
     ViewData["Title"] = "Index";
 }
+<head>
+    <link rel="stylesheet" href="~/css/index.css">
+</head>
 
 <h1>Index</h1>
+
 
 <p>
     <div>
@@ -47,11 +51,11 @@
                         <span>No asignado</span>
                     }
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-custom">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn-custom">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-custom">Delete</a>
+                </td>
         </tr>
 }
     </tbody>
