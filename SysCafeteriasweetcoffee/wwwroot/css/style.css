@@ -11,12 +11,20 @@ body {
     padding: 20px;
 }
 
-.header {
+/*.header {
     text-align: center;
     background-color: #fff3e0;
     padding: 40px 20px;
     border-radius: 15px;
+}*/
+.header {
+    background-image: url('https://scontent-mia3-1.xx.fbcdn.net/v/t39.30808-6/468395299_1319683622734539_3988470298095248660_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=UVEgr7BbP40Q7kNvgF8nWNH&_nc_zt=23&_nc_ht=scontent-mia3-1.xx&_nc_gid=AHdyjzZRP3Fsb2TRsa9ZTmS&oh=00_AYA3Kf67EKFnOwt29w_qjd5YWHESkLGuN0b0nbZKxQQKSg&oe=674AD2D5'); /* Ruta a tu imagen */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el áAjustarea */
+    background-position: center; /* Centra la imagen */
+    height: 200px; /* Altura del banner (ajusta según tu diseño) */
+    width: 100%; /* Asegúrate de que ocupe todo el ancho */
 }
+
 
 .logo {
     font-size: 48px;
