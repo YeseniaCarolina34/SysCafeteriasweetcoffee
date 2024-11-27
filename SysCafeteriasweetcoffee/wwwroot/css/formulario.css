@@ -139,12 +139,23 @@ form {
     }
 /* Fondo y estructura general */
 .container {
-    background-color: #fff3e0;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: transparent; /* Fondo transparente */
+    padding: 20px; /* Opcional, ajusta si quieres mantener espacio interno */
+    border: none !important; /* Fuerza la eliminación del borde */
+    box-shadow: none !important; /* Fuerza la eliminación de la sombra */
     font-size: 14px;
 }
+
+form {
+    background-color: #fff3e0; /* Si necesitas un fondo blanco */
+    padding: 20px;
+    border: none !important; /* Elimina cualquier borde */
+    box-shadow: none !important; /* Elimina cualquier sombra */
+    width: auto;
+    margin: 0 auto; /* Centra el formulario */
+}
+
+
 
 /* Estilo de los campos de detalles */
 .details-field {
