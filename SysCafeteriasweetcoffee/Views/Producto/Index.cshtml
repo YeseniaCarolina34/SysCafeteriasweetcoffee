@@ -294,14 +294,19 @@
 
     function finalizeOrder() {
         const total = parseFloat(document.getElementById("total").value);
-
+@* 
         const detallesDeOrden = order.map(item => ({
             IdProducto: item.id,
             Cantidad: item.quantity,
             Precio: item.precio
-        }));
-        Console.log(detallesDeOrden);
-        alert("Pedido realizado. Total: $" + total);
+        })); *@
+           // Crear detalles de la orden
+        const detallesDeOrden = order.map(item => ({
+                idProducto: item.id, // Cambiado a camelCase para seguir estándares
+                cantidad: item.quantity,
+                precio: item.precio
+            }));
+       
 
         fetch('/Orden/AgregarOrden', {
             method: 'POST',
@@ -309,7 +314,7 @@
                 'Content-Type': 'application/json'
             },
             //revisa el console que este bien escrito para y que detalles orden el que este abajo este escrito igual mente escrito como el controlador
-            body: JSON.stringify({ total: total, DetalleDeOrden: detallesDeOrden })
+            body: JSON.stringify({ total: total, DetallesDeOrden: detallesDeOrden })
         })
             .then(response => {
                 if (response.ok) {

@@ -123,7 +123,7 @@ namespace SysCafeteriasweetcoffee.Controllers
         {
             return View();
         }
-
+        [AllowAnonymous]
         // POST: Registro
         [HttpPost]
         public async Task<IActionResult> Registro(Usuario usuario)
